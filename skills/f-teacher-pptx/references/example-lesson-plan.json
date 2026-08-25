@@ -1,0 +1,272 @@
+{
+  "courseName": "示例课程",
+  "courseCode": "DEMO1001",
+  "lessonNumber": 1,
+  "lessonTitle": "示例课：建立清晰教学主线",
+  "sourceInventoryHash": "0000000000000000000000000000000000000000000000000000000000000000",
+  "fontPolicy": {
+    "coverTitle": 60,
+    "slideTitle": 40,
+    "body": 26,
+    "diagramLabel": 20,
+    "caption": 16,
+    "footer": 13
+  },
+  "visualPolicy": {
+    "minImageSlideRatio": 0.8,
+    "minMultiImageSlideRatio": 0.3,
+    "maxConsecutiveDiagramOnly": 2
+  },
+  "slides": [
+    {
+      "slide": 1,
+      "type": "cover",
+      "title": "示例课：建立清晰教学主线",
+      "teachingGoal": "建立本次课的主题和真实问题。",
+      "body": ["从真实问题出发，再逐步解释原理、细节和应用。"],
+      "sources": ["课程大纲与教学进度表"],
+      "visual": {
+        "kind": "generated-image",
+        "purpose": "建立课程主题，不作为事实证据。",
+        "assets": [
+          {
+            "url": "https://example.edu/assets/lesson-cover.png",
+            "source": "ImageGen prompt record demo-cover-01",
+            "purpose": "呈现教师组织教学主线的场景",
+            "mapsTo": [1],
+            "alt": "教师将背景、原理、细节和应用连接成教学主线"
+          }
+        ]
+      },
+      "layoutIntent": "cover-image-right",
+      "qaStatus": "planned"
+    },
+    {
+      "slide": 2,
+      "type": "background",
+      "title": "碎片化知识会让学生失去方向",
+      "teachingGoal": "说明为什么课程需要一条明确主线。",
+      "body": ["只有术语和按钮列表时，学生不知道知识之间的因果关系。", "教学主线要先回答为什么学，再解释如何工作。"],
+      "sources": ["课程教学设计记录"],
+      "visual": {
+        "kind": "photo",
+        "purpose": "用混乱笔记与清晰结构的对比展示问题。",
+        "assets": [
+          {
+            "url": "https://example.edu/assets/confusing-notes.jpg",
+            "source": "Example University image library",
+            "purpose": "展示碎片化笔记",
+            "mapsTo": [1],
+            "alt": "缺少结构的碎片化课堂笔记"
+          },
+          {
+            "url": "https://example.edu/assets/clear-map.jpg",
+            "source": "Example University image library",
+            "purpose": "展示清晰知识地图",
+            "mapsTo": [2],
+            "alt": "有明确因果关系的知识地图"
+          }
+        ]
+      },
+      "layoutIntent": "before-after",
+      "qaStatus": "planned"
+    },
+    {
+      "slide": 3,
+      "type": "roadmap",
+      "title": "本课沿四个问题逐层展开",
+      "teachingGoal": "让学生提前看到背景、原理、细节和应用的关系。",
+      "body": ["问题从哪里来？", "核心原理是什么？", "关键细节怎样影响结果？", "最后如何验证应用效果？"],
+      "sources": ["课程教学设计记录"],
+      "visual": {
+        "kind": "illustration",
+        "purpose": "将四个问题连接成连续路线。",
+        "assets": [
+          {
+            "url": "https://example.edu/assets/lesson-route.svg",
+            "source": "课程项目自制插图",
+            "purpose": "展示四阶段教学路线",
+            "mapsTo": [1, 2, 3, 4],
+            "alt": "从背景到应用验证的四阶段路线"
+          }
+        ]
+      },
+      "layoutIntent": "full-width-route",
+      "qaStatus": "planned"
+    },
+    {
+      "slide": 4,
+      "type": "principle",
+      "title": "主线把问题、规则和结果连接起来",
+      "teachingGoal": "解释教学主线的基本结构。",
+      "body": ["背景定义要解决的问题。", "原理给出解释问题的规则。", "细节说明规则成立的条件。", "案例检验规则是否能够落地。"],
+      "sources": ["课程教学设计记录"],
+      "visual": {
+        "kind": "document-example",
+        "purpose": "用实际教案片段显示四部分如何连接。",
+        "assets": [
+          {
+            "url": "https://example.edu/assets/lesson-outline.png",
+            "source": "示例课程教案",
+            "purpose": "展示完整教学结构",
+            "mapsTo": [1, 2, 3, 4],
+            "alt": "包含背景、原理、细节和案例的教案结构"
+          }
+        ]
+      },
+      "layoutIntent": "document-example-left",
+      "qaStatus": "planned"
+    },
+    {
+      "slide": 5,
+      "type": "detail",
+      "title": "每个术语都要回答四个问题",
+      "teachingGoal": "把抽象术语改写成可理解的解释。",
+      "body": ["它是什么？", "为什么重要？", "它怎样工作？", "什么情况下会出错？"],
+      "sources": ["课程教学设计记录"],
+      "visual": {
+        "kind": "source-image",
+        "purpose": "对比原始术语页和改写后的解释页。",
+        "assets": [
+          {
+            "url": "https://example.edu/assets/term-before.png",
+            "source": "原教师课件第12页",
+            "purpose": "展示只有术语的原始页面",
+            "mapsTo": [1],
+            "alt": "只有术语列表的原始课件页面"
+          },
+          {
+            "url": "https://example.edu/assets/term-after.png",
+            "source": "课程项目重构页面",
+            "purpose": "展示按四个问题展开的页面",
+            "mapsTo": [1, 2, 3, 4],
+            "alt": "对术语进行完整解释的重构页面"
+          }
+        ]
+      },
+      "layoutIntent": "before-after",
+      "qaStatus": "planned"
+    },
+    {
+      "slide": 6,
+      "type": "operation",
+      "title": "先写内容合同再选择版式",
+      "teachingGoal": "给出从资料到页面的可复现步骤。",
+      "body": ["盘点源课件的章节、文字和图片。", "为每页写教学目标、正文和来源。", "准备与正文逐项对应的视觉资产。", "内容与资产通过校验后再生成PPT。"],
+      "sources": ["f-teacher-pptx工作流"],
+      "visual": {
+        "kind": "screenshot",
+        "purpose": "显示内容计划校验的实际输出。",
+        "assets": [
+          {
+            "url": "https://example.edu/assets/validator-output.png",
+            "source": "f-teacher-pptx validator demo",
+            "purpose": "展示校验通过结果",
+            "mapsTo": [2, 3, 4],
+            "alt": "教学内容计划校验脚本的通过结果"
+          }
+        ]
+      },
+      "layoutIntent": "steps-left-screenshot-right",
+      "qaStatus": "planned"
+    },
+    {
+      "slide": 7,
+      "type": "case",
+      "title": "扩展文本框比缩小字号更易读",
+      "teachingGoal": "用前后对比说明文本容器的修复顺序。",
+      "body": ["原页面把六行文字压入固定高度卡片，正文只有18磅。", "修复后扩大卡片并拆分内容，正文保持26磅以上。", "渲染检查确认文字不再跨出边界。"],
+      "sources": ["示例课程页面修复记录"],
+      "visual": {
+        "kind": "source-image",
+        "purpose": "用修复前后页面证明扩大容器的效果。",
+        "assets": [
+          {
+            "url": "https://example.edu/assets/overflow-before.png",
+            "source": "示例课程修复记录",
+            "purpose": "展示文字越界的页面",
+            "mapsTo": [1],
+            "alt": "文字超过固定卡片边界的页面"
+          },
+          {
+            "url": "https://example.edu/assets/overflow-after.png",
+            "source": "示例课程修复记录",
+            "purpose": "展示扩大卡片后的页面",
+            "mapsTo": [2, 3],
+            "alt": "扩大卡片并保持大字号的修复页面"
+          }
+        ]
+      },
+      "layoutIntent": "before-after",
+      "qaStatus": "planned"
+    },
+    {
+      "slide": 8,
+      "type": "pitfall",
+      "title": "三类做法会制造假图文并茂",
+      "teachingGoal": "识别配图和排版中的常见错误。",
+      "body": ["错误：用背景色块冒充图片；正确：放入能解释正文的真实视觉。", "错误：缩小整屏截图；正确：裁剪关键区域并标注。", "错误：文字太多就缩小字号；正确：扩大容器或拆页。"],
+      "sources": ["示例课程QA记录"],
+      "visual": {
+        "kind": "photo",
+        "purpose": "展示真实图像、可读截图和大字号正文的正确效果。",
+        "assets": [
+          {
+            "url": "https://example.edu/assets/good-teaching-slide.jpg",
+            "source": "示例课程QA记录",
+            "purpose": "展示通过视觉验收的教学页面",
+            "mapsTo": [1, 2, 3],
+            "alt": "包含相关图片、可读截图和大字号正文的教学页面"
+          }
+        ]
+      },
+      "layoutIntent": "pitfall-and-example",
+      "qaStatus": "planned"
+    },
+    {
+      "slide": 9,
+      "type": "qa",
+      "title": "问答：文字放不下时先做什么？",
+      "teachingGoal": "确认学生掌握扩容、重排和拆页的顺序。",
+      "body": ["问题：文字放不下时应该先缩小字号吗？", "答案：不应该。先扩大文本框或改变版式，再删除冗余或拆分页面。", "只有代码、公式和表格可以使用受控的小字号例外。"],
+      "sources": ["f-teacher-pptx视觉标准"],
+      "visual": {
+        "kind": "diagram",
+        "purpose": "用决策流程强化扩容、重排、拆页的先后顺序。",
+        "assets": [],
+        "spec": {
+          "steps": ["扩大文本框", "重排相邻内容", "删除冗余", "按语义拆页"],
+          "mapsTo": [1, 2, 3]
+        },
+        "exception": {
+          "reason": "直接问答和决策箭头已经形成完整语义，添加装饰图片会分散注意力。"
+        }
+      },
+      "layoutIntent": "direct-qa",
+      "qaStatus": "planned"
+    },
+    {
+      "slide": 10,
+      "type": "summary",
+      "title": "内容、图片和验收共同保证教学质量",
+      "teachingGoal": "回收本课主线并形成可复用检查框架。",
+      "body": ["先用主线组织背景、原理、细节和应用。", "再用相关图片、截图或图表解释每个关键点。", "最后逐页渲染，检查字号、文本框和图文关系。"],
+      "sources": ["本课全部内容"],
+      "visual": {
+        "kind": "illustration",
+        "purpose": "把内容合同、视觉合同和验收闭环连接起来。",
+        "assets": [
+          {
+            "url": "https://example.edu/assets/content-visual-qa-loop.svg",
+            "source": "课程项目自制插图",
+            "purpose": "展示三个合同构成的闭环",
+            "mapsTo": [1, 2, 3],
+            "alt": "内容、视觉与质量验收构成的闭环"
+          }
+        ]
+      },
+      "layoutIntent": "closing-loop",
+      "qaStatus": "planned"
+    }
+  ]
+}

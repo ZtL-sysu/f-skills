@@ -1,0 +1,4 @@
+interface:
+  display_name: "F Research V1"
+  short_description: "Evidence-gated research, professional writing, and synchronized paper delivery"
+  default_prompt: "Use $f-research-v1 with my guidance Markdown file to run experiments, produce a professional evidence-backed manuscript, and synchronize any known journal constraints and metadata across the final package."

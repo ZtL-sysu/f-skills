@@ -1,0 +1,6 @@
+interface:
+  display_name: "F Teacher PPTX"
+  short_description: "严格创建、重构、审计并逐页验收图文并茂的高质量教学课件"
+  default_prompt: "Use $f-teacher-pptx to create or rebuild a classroom-readable, box-safe, image-rich teaching PPTX and verify every slide."
+policy:
+  allow_implicit_invocation: true

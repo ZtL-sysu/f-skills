@@ -1,0 +1,4 @@
+interface:
+  display_name: "F Guidance Builder V1"
+  short_description: "Build rigorous research guidance files"
+  default_prompt: "Generate a rigorous f-research-v1 guidance file from my proposed technique, hardware, and optional application domain."

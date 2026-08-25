@@ -1,0 +1,4 @@
+interface:
+  display_name: "HOLDLE v10"
+  short_description: "执行HOLDLE v10冠军策略、滚动回测与实盘咨询"
+  default_prompt: "Use $f-holdle-v10 to analyze the locked HOLDLE v10 champion strategy or run an audited backtest."

@@ -1,0 +1,16 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+*.log
+.env
+.env.*
+config.txt
+credentials*
+token*
+cache/
+logs/
+runs/
+results/
+outputs/
+04_训练记录/
+05_上岗指令/
