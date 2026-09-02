@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import re
 import sys
 from collections import Counter
@@ -24,6 +25,8 @@ REQUIRED_TOP = {
     "lessonTitle",
     "sourceInventoryHash",
     "fontPolicy",
+    "displayPolicy",
+    "speakerNotesPolicy",
     "visualPolicy",
     "slides",
 }
@@ -64,6 +67,14 @@ ACTIVITY_PATTERNS = [
     r"课堂展示",
     r"角色扮演",
     r"投票评选",
+]
+
+ANSWER_LABEL_PATTERNS = [
+    r"(?:^|\n)\s*答案\s*[:：]",
+    r"(?:^|\n)\s*参考答案\s*[:：]?",
+    r"(?:^|\n)\s*正确答案\s*[:：]?",
+    r"直接问答",
+    r"\bQ\s*&\s*A\b",
 ]
 
 FONT_FLOORS = {
@@ -278,6 +289,17 @@ def validate_plan(
         elif value < floor:
             result.error(f"fontPolicy.{role}={value} is below hard floor {floor}")
 
+    display_policy = data.get("displayPolicy")
+    if not isinstance(display_policy, dict):
+        result.error("displayPolicy must be an object")
+        display_policy = {}
+    if display_policy.get("showCourseIdentityFooter") is not False:
+        result.error("displayPolicy.showCourseIdentityFooter must be false")
+    if display_policy.get("showPageNumber") is not False:
+        result.error("displayPolicy.showPageNumber must be false")
+    if data.get("speakerNotesPolicy") != "talk-only":
+        result.error('speakerNotesPolicy must be "talk-only"')
+
     visual_policy = data.get("visualPolicy")
     if not isinstance(visual_policy, dict):
         result.error("visualPolicy must be an object")
@@ -366,10 +388,12 @@ def validate_plan(
             result.error(f"slide {number}: forbidden classroom-activity phrase matches /{pattern}/")
 
         if slide_type == "qa":
-            if not any(line.startswith("问题：") for line in body):
-                result.error(f"slide {number}: Q&A body must contain a line starting with 问题：")
-            if not any(line.startswith("答案：") for line in body):
-                result.error(f"slide {number}: Q&A body must contain a line starting with 答案：")
+            question_text = "\n".join([title, *body])
+            if not any(line.startswith("问题：") for line in [title, *body]):
+                result.error(f"slide {number}: question checkpoint title/body must contain a line starting with 问题：")
+            for pattern in ANSWER_LABEL_PATTERNS:
+                if re.search(pattern, question_text, flags=re.I):
+                    result.error(f"slide {number}: question checkpoint contains forbidden answer/Q&A text /{pattern}/")
 
         if not isinstance(visual, dict):
             result.error(f"slide {number}: visual must be an object")
@@ -460,7 +484,7 @@ def validate_plan(
                 diagram_run += 1
                 longest_diagram_run = max(longest_diagram_run, diagram_run)
 
-    exact_one = ("cover", "summary")
+    exact_one = ("cover", "ideology", "summary")
     for required in exact_one:
         if type_counts[required] != 1:
             result.error(f"lesson must contain exactly one {required} slide; found {type_counts[required]}")
@@ -482,14 +506,21 @@ def validate_plan(
     if slides and isinstance(slides[-1], dict) and slides[-1].get("type") != "summary":
         result.error("last slide must be summary")
 
+    ideology_positions = [
+        i
+        for i, slide in enumerate(slides)
+        if isinstance(slide, dict) and slide.get("type") == "ideology"
+    ]
+    if ideology_positions and ideology_positions[0] > 4:
+        result.error("the lesson-related ideology slide must appear within slides 1–5")
+
     positions = {
         kind: min((i for i, slide in enumerate(slides) if isinstance(slide, dict) and slide.get("type") == kind), default=9999)
         for kind in ("background", "roadmap", "qa", "summary")
     }
-    last_qa = max(
-        (i for i, slide in enumerate(slides) if isinstance(slide, dict) and slide.get("type") == "qa"),
-        default=-1,
-    )
+    qa_positions = [
+        i for i, slide in enumerate(slides) if isinstance(slide, dict) and slide.get("type") == "qa"
+    ]
     core_positions = [
         i
         for i, slide in enumerate(slides)
@@ -497,8 +528,26 @@ def validate_plan(
     ]
     if core_positions and not (positions["background"] < min(core_positions) and positions["roadmap"] < min(core_positions)):
         result.error("background and roadmap must precede principle/detail/operation/case content")
-    if core_positions and not (last_qa > max(core_positions) and positions["summary"] > last_qa):
-        result.error("at least one final Q&A must follow core content, and summary must follow the final Q&A")
+    previous_qa = -1
+    core_types = {"principle", "detail", "operation", "case", "pitfall"}
+    for qa_position in qa_positions:
+        if not any(
+            isinstance(slides[i], dict) and slides[i].get("type") in core_types
+            for i in range(previous_qa + 1, qa_position)
+        ):
+            result.error(
+                f"question checkpoint on slide {qa_position + 1} must follow a substantive knowledge section"
+            )
+        previous_qa = qa_position
+    if len(qa_positions) >= 2:
+        if qa_positions[0] >= math.ceil(len(slides) * 0.75):
+            result.error("question checkpoints are clustered near the end; at least one must appear before the final quarter")
+        minimum_span = max(3, math.floor(len(slides) * 0.2))
+        if qa_positions[-1] - qa_positions[0] < minimum_span:
+            result.error(
+                f"question checkpoints are too tightly clustered; first/last span {qa_positions[-1] - qa_positions[0]} slides, "
+                f"minimum is {minimum_span}"
+            )
 
     non_cover = max(len(slides) - type_counts["cover"], 1)
     image_ratio = image_slides / non_cover

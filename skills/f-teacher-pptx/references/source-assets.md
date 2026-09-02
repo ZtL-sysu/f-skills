@@ -74,6 +74,6 @@ An asset passes only if:
 - the selected crop keeps the teaching subject intact;
 - it adds information, emotion, comparison, evidence, or orientation;
 - it is not repeated within the lesson without a documented new purpose;
-- it has speaker-note provenance and alt text.
+- it has sidecar provenance in the lesson plan/asset records and alt text; do not put provenance in speaker notes.
 
 For a normal 16:9 slide, a single explanatory image should usually occupy at least 25% of the slide. An image smaller than 8% of slide area cannot count toward the image-density gate unless it is one of several meaningful detail images.

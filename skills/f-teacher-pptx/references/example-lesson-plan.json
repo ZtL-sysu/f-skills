@@ -12,6 +12,11 @@
     "caption": 16,
     "footer": 13
   },
+  "displayPolicy": {
+    "showCourseIdentityFooter": false,
+    "showPageNumber": false
+  },
+  "speakerNotesPolicy": "talk-only",
   "visualPolicy": {
     "minImageSlideRatio": 0.8,
     "minMultiImageSlideRatio": 0.3,
@@ -73,6 +78,29 @@
     },
     {
       "slide": 3,
+      "type": "ideology",
+      "title": "严谨教学是人才培养的工程责任",
+      "teachingGoal": "把清晰、可验证的教学设计与人才培养质量联系起来。",
+      "body": ["课程设计必须尊重事实、证据和学生认知规律。", "可复核的内容与来源，是教师履行育人责任的基本要求。", "扎实掌握基础知识，才能把个人学习转化为科技创新能力。"],
+      "sources": ["课程教学设计记录与人才培养目标"],
+      "visual": {
+        "kind": "document-example",
+        "purpose": "用教学目标与验收记录说明严谨教学如何落实为可核查责任。",
+        "assets": [
+          {
+            "url": "https://example.edu/assets/teaching-responsibility-record.png",
+            "source": "示例课程质量记录",
+            "purpose": "展示教学目标、证据与验收的对应关系",
+            "mapsTo": [1, 2, 3],
+            "alt": "教学目标、证据来源和质量验收记录"
+          }
+        ]
+      },
+      "layoutIntent": "document-evidence-and-responsibility",
+      "qaStatus": "planned"
+    },
+    {
+      "slide": 4,
       "type": "roadmap",
       "title": "本课沿四个问题逐层展开",
       "teachingGoal": "让学生提前看到背景、原理、细节和应用的关系。",
@@ -95,7 +123,7 @@
       "qaStatus": "planned"
     },
     {
-      "slide": 4,
+      "slide": 5,
       "type": "principle",
       "title": "主线把问题、规则和结果连接起来",
       "teachingGoal": "解释教学主线的基本结构。",
@@ -118,7 +146,7 @@
       "qaStatus": "planned"
     },
     {
-      "slide": 5,
+      "slide": 6,
       "type": "detail",
       "title": "每个术语都要回答四个问题",
       "teachingGoal": "把抽象术语改写成可理解的解释。",
@@ -148,7 +176,7 @@
       "qaStatus": "planned"
     },
     {
-      "slide": 6,
+      "slide": 7,
       "type": "operation",
       "title": "先写内容合同再选择版式",
       "teachingGoal": "给出从资料到页面的可复现步骤。",
@@ -171,7 +199,7 @@
       "qaStatus": "planned"
     },
     {
-      "slide": 7,
+      "slide": 8,
       "type": "case",
       "title": "扩展文本框比缩小字号更易读",
       "teachingGoal": "用前后对比说明文本容器的修复顺序。",
@@ -201,7 +229,7 @@
       "qaStatus": "planned"
     },
     {
-      "slide": 8,
+      "slide": 9,
       "type": "pitfall",
       "title": "三类做法会制造假图文并茂",
       "teachingGoal": "识别配图和排版中的常见错误。",
@@ -224,11 +252,11 @@
       "qaStatus": "planned"
     },
     {
-      "slide": 9,
+      "slide": 10,
       "type": "qa",
-      "title": "问答：文字放不下时先做什么？",
+      "title": "问题：文字放不下时先做什么？",
       "teachingGoal": "确认学生掌握扩容、重排和拆页的顺序。",
-      "body": ["问题：文字放不下时应该先缩小字号吗？", "答案：不应该。先扩大文本框或改变版式，再删除冗余或拆分页面。", "只有代码、公式和表格可以使用受控的小字号例外。"],
+      "body": ["问题：文字放不下时应该先缩小字号吗？", "追问：扩大文本框、重排内容和拆页应按什么顺序判断？", "证据要求：指出哪类内容允许受控的小字号例外。"],
       "sources": ["f-teacher-pptx视觉标准"],
       "visual": {
         "kind": "diagram",
@@ -239,14 +267,14 @@
           "mapsTo": [1, 2, 3]
         },
         "exception": {
-          "reason": "直接问答和决策箭头已经形成完整语义，添加装饰图片会分散注意力。"
+          "reason": "问题、追问、证据要求和决策箭头已经形成完整语义，添加装饰图片会分散注意力。"
         }
       },
-      "layoutIntent": "direct-qa",
+      "layoutIntent": "question-checkpoint",
       "qaStatus": "planned"
     },
     {
-      "slide": 10,
+      "slide": 11,
       "type": "summary",
       "title": "内容、图片和验收共同保证教学质量",
       "teachingGoal": "回收本课主线并形成可复用检查框架。",

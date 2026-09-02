@@ -1,15 +1,17 @@
 # f-skills
 
-Public collection of the currently installed `f-*` Codex skills.
+Public collection of the currently installed `f-*` Codex skills plus the native subagent delegation skill used alongside them.
 
 ## Included skills
 
 - `f-guidance-builder-v1`: build evidence-grounded research guidance from a method or technique idea.
 - `f-research-v1`: execute a guidance contract through experiments, evidence audits, manuscript production, and delivery.
 - `f-submit-v1`: perform scientific, integrity, comparator, revision, and submission-package checks for a finished manuscript.
+- `f-teacher-guide`: create and audit step-by-step teaching guides and self-contained student experiment packages.
 - `f-teacher-pptx`: create and audit image-rich, classroom-readable multi-lesson teaching decks.
 - `f-holdle`: execute and audit the HOLDLE v9-robust A-share research and consultation rules.
 - `f-holdle-v10`: execute the frozen HOLDLE v10 composite-champion configuration and rolling tests.
+- `spark-task-delegator`: selectively route objectively verifiable work to Luna and semantic judgment work to Terra after a delegation net-benefit check.
 
 Each skill is stored under `skills/<skill-name>/` and retains its `SKILL.md`, scripts, references, assets, and UI metadata where present.
 

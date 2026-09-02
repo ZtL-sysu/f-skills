@@ -6,8 +6,8 @@ Read this file before choosing layouts or placing text and images.
 
 - Default to 16:9 widescreen.
 - Keep audience-facing content inside a consistent safe area. On a 13.333 × 7.5 inch slide, use about 0.65–0.8 inch left/right margins and 0.3–0.45 inch top/bottom margins unless a full-bleed image is intentional.
-- Reserve the footer band before sizing the content area. Do not let diagrams, captions, or screenshots drift into it.
-- Use a small set of content-led layouts: image-led explanation, annotated screenshot, full-width process, comparison, worked example, evidence/chart, direct Q&A, and summary. Vary adjacent silhouettes when the content supports it.
+- Do not reserve or draw a page-number band: page numbers are forbidden. Keep diagrams, captions, and screenshots inside the safe area, and do not place a repeated course name, course code, or combined course-identity footer on body slides.
+- Use a small set of content-led layouts: image-led explanation, annotated screenshot, full-width process, comparison, worked example, evidence/chart, question checkpoint, and summary. Vary adjacent silhouettes when the content supports it.
 
 ## Classroom typography
 
@@ -22,11 +22,11 @@ Hard floors are acceptance gates, not design targets.
 | Diagram/process label | 22–24 pt | 20 pt |
 | Screenshot annotation | 20–24 pt | 18 pt |
 | Caption/source line | 16–18 pt | 16 pt |
-| Footer/page number | 12–14 pt | 12 pt |
+| Necessary audience-facing source line | 12–14 pt | 12 pt |
 
 These are **final PowerPoint point sizes after export**. Do not assume the builder's numeric `fontSize` is already a PowerPoint point value. Some Artifact Tool/runtime paths serialize a CSS-pixel-like value at roughly 0.75 PowerPoint points; calibrate a sample, inspect the exported OOXML/render, and use about `target_pt / 0.75` (for example, about 37.3 builder units for a 28 pt final body) when that runtime exhibits the conversion. The final PPTX and render, not the source constant, determine compliance.
 
-Use the preferred range for new or rebuilt slides. The hard floor is only the rejection boundary; do not set every body paragraph to 26 pt merely because it passes. Give every visible text object a semantic name that identifies its role (`封面标题`, `标题`, `卡片标题-*`, `正文-*`, `流程文字-*`, `代码-*`, `公式-*`, `表格-*`, `标注-*`, `图注-*`, `页脚`) and an explicit font size so the exported deck can be audited without guessing inherited typography.
+Use the preferred range for new or rebuilt slides. The hard floor is only the rejection boundary; do not set every body paragraph to 26 pt merely because it passes. Give every visible text object a semantic name that identifies its role (`封面标题`, `标题`, `卡片标题-*`, `正文-*`, `流程文字-*`, `代码-*`, `公式-*`, `表格-*`, `标注-*`, `图注-*`, `来源`) and an explicit font size so the exported deck can be audited without guessing inherited typography. Never create an object named or functioning as `页码`.
 
 Code, formulas, and dense data tables may use 18–20 pt only when the page contains a focused magnified region and no more than one such exception. Never shrink an entire page to preserve a fixed layout.
 
@@ -97,6 +97,9 @@ An engaging image still fails when it is only keyword-related, visually loud but
 ## Screenshot and chart legibility
 
 - Crop to the relevant region and preserve enough context to identify the interface.
+- Inspect the frozen crop before placing it. Reject it if any edge contains part of a neighboring row/card, a clipped heading or label, an orphan punctuation mark, a previous/next webpage fragment, an unexplained black strip, or an accidental scrollbar/window border.
+- Crop complete semantic units. A table row includes the full glyph height and both mapped columns; a card includes its entire boundary and text; a menu includes the command and enough parent context to identify what was selected.
+- For a claimed operation sequence, show both the action and the resulting state when the result is not self-evident. For archives and folders, the visible names/hierarchy must match the directory structure described in the body.
 - Use numbered annotations, callout lines, or a paired overview/detail view.
 - If key UI text is not legible at 100% rendered slide size, the screenshot fails even if its source resolution is high.
 - Do not stretch images. Use contain/crop behavior deliberately.

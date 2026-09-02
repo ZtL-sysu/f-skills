@@ -9,7 +9,12 @@ All are required:
 - PPTX is a valid ZIP/OOXML package.
 - Expected file and slide counts match.
 - Course/lesson identity is correct.
-- Every slide has speaker notes with `[Sources]`, `visual.kind`, and `visual.purpose`.
+- Exactly one lesson-related ideology page appears within slides 1–5.
+- Question pages contain questions/follow-ups/evidence requirements only, contain no answer label or answer paragraph, and are distributed after relevant knowledge sections.
+- Body slides contain no repeated course-name/course-code identity footer.
+- Every slide has a non-empty, directly speakable oral script in notes, with enough causal context to teach the page.
+- Speaker notes contain no `[Sources]`, `[讲授文案]`, source/visual field labels, paths, URLs, hashes, prompt IDs, build instructions, or QA metadata.
+- No slide contains a slide-number placeholder, named page-number shape, `n / total`, or isolated numeric folio in the footer band.
 - No forbidden classroom-activity phrases.
 - Plan and final deck satisfy image-density thresholds or documented exceptions.
 - No repeated foreground images without approval.
@@ -38,6 +43,8 @@ Review each rendered PNG individually. Record pass/fail for every category:
 - Explanation is plain, complete, and logically connected.
 - Terms, numbers, formulas, dates, units, and references are correct.
 - A screenshot, chart, or example matches the described operation/result.
+- Background/history pages explain cause and change rather than listing dates or names; each stage states what problem it solved, what changed, and what limitation remained.
+- Non-practical lessons contain at least 40 substantive pages unless the user set another length; shorter practice lessons still include a complete worked and verified deliverable path.
 - No production notes, unresolved placeholders, or raw source captions leak into visible content.
 
 ### Typography and containers
@@ -56,6 +63,8 @@ Review each rendered PNG individually. Record pass/fail for every category:
 - Genuine image coverage meets the lesson policy.
 - Critical screenshot text is legible at 100%.
 - Crop, aspect ratio, and resolution are clean.
+- No crop edge exposes an adjacent row, half-card, clipped label, orphan punctuation, webpage remnant, black padding strip, or truncated glyph.
+- Directory/archive/operation screenshots show the exact objects and states claimed in the body; an action-only screenshot is not accepted as evidence of its result.
 - A photo is not decorative filler.
 - Externally scouted/generated visuals have a concrete engagement hook and provenance; “technology atmosphere” does not count.
 - A diagram adds relationships or mechanism rather than duplicating bullets.
@@ -66,7 +75,7 @@ Review each rendered PNG individually. Record pass/fail for every category:
 
 - No text-text, text-image, image-image, or connector-label collision.
 - No object unintentionally leaves the canvas.
-- Alignment, margins, and footer placement are consistent.
+- Alignment and margins are consistent; no page number or course-identity footer leaks onto any body slide.
 - The page does not look like a dense dashboard of tiny cards.
 - Visual weight is balanced; the image is not a token thumbnail.
 - Adjacent slides do not repeat an identical layout without a content reason.
@@ -75,9 +84,14 @@ Review each rendered PNG individually. Record pass/fail for every category:
 
 - The page follows naturally from the previous page.
 - The next page is prepared by the current conclusion or question.
+- The lesson moves from an opening situation and whole-object view into need/background, overall model, parts, mechanism, details/failures, and a return to the opening problem.
+- Within each knowledge block, students first see what the object or result looks like, then why it is needed, how it works, and which details change the outcome.
+- The oral notes sound like a teacher explaining to students: situation → trigger → reasoning/handling → observable result → takeaway/transition. They do not sound like metadata or bullets read aloud.
 - Operations include checks or observable results.
 - Pitfalls pair each error with its correct handling.
-- Q&A states both the question and answer directly.
+- The ideology page is specific to the lesson, ties learning to concrete engineering or national technological responsibility, and is not a generic slogan page.
+- Each question checkpoint follows the section it consolidates, contains no visible answer, and supports summary, recall, evidence-based reasoning, or transition.
+- Multiple question checkpoints are spread across the lesson rather than clustered near the end.
 - Summary closes the opening problem rather than starting new content.
 
 ## Severity

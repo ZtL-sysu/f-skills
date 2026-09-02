@@ -1,0 +1,6 @@
+interface:
+  display_name: "F Teacher Guide"
+  short_description: "构建并严格验收学生可独立完成的图文实验指导书"
+  default_prompt: "Use $f-teacher-guide to create or audit a step-by-step student experiment guide and its self-contained package."
+policy:
+  allow_implicit_invocation: true

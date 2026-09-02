@@ -21,6 +21,11 @@ Use [example-lesson-plan.json](example-lesson-plan.json) as a **pre-freeze plann
     "caption": 16,
     "footer": 13
   },
+  "displayPolicy": {
+    "showCourseIdentityFooter": false,
+    "showPageNumber": false
+  },
+  "speakerNotesPolicy": "talk-only",
   "visualPolicy": {
     "minImageSlideRatio": 0.8,
     "minMultiImageSlideRatio": 0.3,
@@ -81,12 +86,13 @@ The course identity, lesson identity, policies, and slides are required. Use a s
 Default required types per lesson:
 
 - exactly one `cover`;
+- exactly one `ideology`, placed within slides 1–5;
 - at least one `background`;
 - at least one `roadmap` per 30 non-cover slides;
 - at least one `principle` or `detail`;
 - at least one `operation` or `case`;
 - at least one `pitfall` per 30 non-cover slides;
-- at least one `qa` per 30 non-cover slides;
+- at least one question-only `qa` per 30 non-cover slides, distributed after the sections they consolidate;
 - exactly one `summary`.
 
 For a purely conceptual lesson, an applied worked example may use `case` instead of a software `operation`. For a purely practical lesson, principles may be short but cannot be absent.
@@ -137,20 +143,25 @@ A slide without a genuine image asset must include:
 
 Exceptions do not remove the 80% lesson-level image gate unless the user explicitly approves a lower threshold for subject-matter reasons. The plan must set the lower value (never below 0.6), give a concrete `rationale`, and record the approval basis in `visualPolicy.userApproval`. Convenience, time pressure, or missing asset work are not valid reasons.
 
-## Direct Q&A structure
+## Course-identity footer policy
 
-The Q&A body must contain both prefixes:
+`displayPolicy.showCourseIdentityFooter` and `displayPolicy.showPageNumber` must both be `false`. Do not place page numbers anywhere in the deck, including slide-number placeholders, manually drawn numbers, `n / total`, or isolated numeric folios. Keep course identity and complete provenance in the cover, file metadata, lesson plan, source notes, manifests, and QA evidence as appropriate, but do not put production metadata in speaker notes.
+
+`speakerNotesPolicy` must be `"talk-only"`. Every exported slide needs a natural oral script. Notes contain only words a teacher could reasonably say aloud; they must not include `[Sources]`, `[讲授文案]`, field labels, file paths, URLs, hashes, prompt identifiers, or build/QA metadata.
+
+## Question-only checkpoint structure
+
+The title or body must contain a `问题：` prompt. The body may add a follow-up and an evidence requirement, but must not contain an answer label or answer paragraph:
 
 ```json
 "body": [
   "问题：为什么复制文件后原位置仍然存在？",
-  "答案：复制会创建一个内容相同的新文件，不改变原文件的位置。",
-  "移动才会改变原文件所在位置。",
-  "完成操作后应核对源路径和目标路径。"
+  "追问：如果改用移动操作，源路径和目标路径会发生什么变化？",
+  "证据要求：指出操作后需要核对的两个路径状态。"
 ]
 ```
 
-No separate activity prompt, partner instruction, presentation request, or peer-assessment item may appear.
+No `答案：`, `参考答案`, `正确答案`, “直接问答”, separate activity prompt, partner instruction, presentation request, or peer-assessment item may appear. Place the page immediately after the relevant knowledge section. For a lesson with two or more question pages, at least one must appear before the final quarter and the pages must span the lesson rather than form one end cluster.
 
 ## QA lifecycle
 

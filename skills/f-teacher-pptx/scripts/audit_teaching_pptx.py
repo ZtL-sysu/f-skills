@@ -44,6 +44,28 @@ ACTIVITY_PATTERNS = [
     r"投票评选",
 ]
 
+ANSWER_LABEL_PATTERNS = [
+    r"(?:^|\n)\s*答案\s*[:：]",
+    r"(?:^|\n)\s*参考答案\s*[:：]?",
+    r"(?:^|\n)\s*正确答案\s*[:：]?",
+    r"直接问答",
+    r"\bQ\s*&\s*A\b",
+]
+
+NOTE_METADATA_PATTERNS = [
+    r"\[\s*Sources?\s*\]",
+    r"\[\s*讲授文案\s*\]",
+    r"(?im)^\s*(?:knowledge\.source|visual\.(?:kind|purpose|asset)|source|promptId|sha256)\s*[:：]",
+    r"https?://\S+",
+    r"(?:^|\s)(?:[A-Za-z]:[\\/]|/(?:Users|home|var|tmp|Volumes)/)\S+",
+    r"\b(?:sha256:)?[0-9a-fA-F]{64}\b",
+]
+
+PAGE_NUMBER_TEXT_PATTERN = re.compile(
+    r"^\s*(?:第\s*)?\d{1,3}\s*(?:(?:/|／|of)\s*\d{1,3})?\s*(?:页)?\s*$",
+    flags=re.I,
+)
+
 
 def natural_key(path: str | Path) -> tuple[Any, ...]:
     return tuple(int(part) if part.isdigit() else part for part in re.split(r"(\d+)", str(path)))
@@ -298,6 +320,19 @@ def audit_deck(
         planned_slides = plan.get("slides", []) if plan else []
         if plan and len(planned_slides) != len(slide_paths):
             result.error(f"plan has {len(planned_slides)} slides but PPTX has {len(slide_paths)}")
+        display_policy = plan.get("displayPolicy", {}) if plan else {}
+        prohibit_identity_footer = isinstance(display_policy, dict) and display_policy.get(
+            "showCourseIdentityFooter"
+        ) is False
+        prohibit_page_numbers = not plan or (
+            isinstance(display_policy, dict) and display_policy.get("showPageNumber") is False
+        )
+        notes_talk_only = not plan or plan.get("speakerNotesPolicy") == "talk-only"
+        course_identity_tokens = [
+            str(plan.get(key, "")).strip()
+            for key in ("courseName", "courseCode")
+            if plan and str(plan.get(key, "")).strip()
+        ]
 
         slide_width, slide_height = 12192000, 6858000
         if "ppt/presentation.xml" in names:
@@ -314,21 +349,23 @@ def audit_deck(
         image_pages = 0
         multi_image_pages = 0
         note_pages = 0
-        notes_with_sources = 0
-        notes_with_visual_kind = 0
-        notes_with_visual_purpose = 0
-        notes_with_knowledge_source = 0
-        note_assets_verified = 0
+        talk_only_notes = 0
+        metadata_contaminated_notes = 0
+        short_notes = 0
+        page_number_violations = 0
         font_violations = 0
         missing_explicit_font_shapes = 0
         outside_objects = 0
         text_capacity_violations = 0
         shrink_autofit_violations = 0
         activity_hits = 0
+        answer_label_hits = 0
+        identity_footer_violations = 0
         image_hash_pages: dict[str, set[int]] = defaultdict(set)
         picture_counts: list[int] = []
         smallest_instructional_font: float | None = None
         planned_assets_verified = 0
+        generated_poster_titles_verified_by_alt = 0
 
         for slide_number, slide_path in enumerate(slide_paths, start=1):
             try:
@@ -340,12 +377,47 @@ def audit_deck(
             planned = planned_slides[slide_number - 1] if slide_number <= len(planned_slides) else None
             if isinstance(planned, dict):
                 planned_title = str(planned.get("title", ""))
+                visual = planned.get("visual")
+                visual_kind = str(visual.get("kind", "")) if isinstance(visual, dict) else ""
+                picture_alt_text = " ".join(
+                    " ".join(
+                        filter(
+                            None,
+                            (
+                                non_visual.attrib.get("name", ""),
+                                non_visual.attrib.get("title", ""),
+                                non_visual.attrib.get("descr", ""),
+                            ),
+                        )
+                    )
+                    for non_visual in root.findall(".//p:pic/p:nvPicPr/p:cNvPr", NS)
+                )
                 if planned_title and normalize_text(planned_title) not in normalize_text(text):
-                    result.error(f"slide {slide_number}: planned title not found in exported slide: {planned_title!r}")
+                    poster_title_in_alt = (
+                        visual_kind == "generated-image"
+                        and normalize_text(planned_title) in normalize_text(picture_alt_text)
+                    )
+                    if poster_title_in_alt:
+                        generated_poster_titles_verified_by_alt += 1
+                    else:
+                        result.error(f"slide {slide_number}: planned title not found in exported slide: {planned_title!r}")
+                if planned.get("type") == "qa":
+                    if "问题：" not in text:
+                        result.error(f"slide {slide_number}: exported question checkpoint lacks 问题：")
+                    for pattern in ANSWER_LABEL_PATTERNS:
+                        if re.search(pattern, text, flags=re.I):
+                            result.error(
+                                f"slide {slide_number}: exported question checkpoint contains forbidden answer/Q&A text /{pattern}/"
+                            )
+                            answer_label_hits += 1
             for pattern in ACTIVITY_PATTERNS:
                 if re.search(pattern, text):
                     result.error(f"slide {slide_number}: forbidden classroom-activity phrase matches /{pattern}/")
                     activity_hits += 1
+
+            if prohibit_page_numbers and root.find(".//p:ph[@type='sldNum']", NS) is not None:
+                result.error(f"slide {slide_number}: slide-number placeholder is forbidden")
+                page_number_violations += 1
 
             rels_path = posixpath.join(
                 posixpath.dirname(slide_path),
@@ -407,6 +479,35 @@ def audit_deck(
                 if not shape_text:
                     continue
                 box = transform_box(shape)
+                if prohibit_page_numbers:
+                    named_as_page_number = (
+                        "页码" in name
+                        or "slide number" in name.lower()
+                        or "slidenum" in name.lower().replace(" ", "")
+                    )
+                    footer_numeric_folio = bool(
+                        box
+                        and box[1] >= int(slide_height * 0.82)
+                        and box[3] <= int(slide_height * 0.07)
+                        and (box[0] <= int(slide_width * 0.18) or box[0] >= int(slide_width * 0.72))
+                        and PAGE_NUMBER_TEXT_PATTERN.fullmatch(shape_text)
+                    )
+                    if named_as_page_number or footer_numeric_folio:
+                        result.error(
+                            f"slide {slide_number}: forbidden page-number shape {name!r} with text {shape_text!r}"
+                        )
+                        page_number_violations += 1
+                if prohibit_identity_footer and slide_number > 1 and box and course_identity_tokens:
+                    x, y, width, height = box
+                    footer_role = "页脚" in name or "footer" in name.lower()
+                    in_footer_band = y >= int(slide_height * 0.82)
+                    if (footer_role or in_footer_band) and any(
+                        token in shape_text for token in course_identity_tokens
+                    ):
+                        result.error(
+                            f"slide {slide_number}: body slide repeats course name/code in the footer band"
+                        )
+                        identity_footer_violations += 1
                 if shape.find(".//a:normAutofit", NS) is not None:
                     result.error(
                         f"slide {slide_number}: text shape {name!r} uses shrink-to-fit; grow/reflow/split the container instead"
@@ -468,58 +569,48 @@ def audit_deck(
             if note_target and note_target in names:
                 note_pages += 1
                 note_text = all_text(xml_root(zf, note_target))
-                if "[Sources]" in note_text:
-                    notes_with_sources += 1
-                else:
-                    result.error(f"slide {slide_number}: speaker notes missing [Sources]")
-                if note_has_field(note_text, "knowledge.source"):
-                    notes_with_knowledge_source += 1
-                else:
-                    result.error(f"slide {slide_number}: speaker notes missing non-empty knowledge.source")
-                if note_has_field(note_text, "visual.kind"):
-                    notes_with_visual_kind += 1
-                else:
-                    result.error(f"slide {slide_number}: speaker notes missing non-empty visual.kind")
-                if note_has_field(note_text, "visual.purpose"):
-                    notes_with_visual_purpose += 1
-                else:
-                    result.error(f"slide {slide_number}: speaker notes missing non-empty visual.purpose")
-                if isinstance(planned, dict):
-                    knowledge_sources = planned.get("sources", [])
-                    if isinstance(knowledge_sources, list):
-                        for source in knowledge_sources:
-                            candidates = provenance_candidates(source)
-                            if candidates and not any(candidate in note_text for candidate in candidates):
-                                result.error(
-                                    f"slide {slide_number}: speaker notes do not identify planned knowledge source {candidates[0]!r}"
-                                )
-                    visual = planned.get("visual")
-                    assets = visual.get("assets", []) if isinstance(visual, dict) else []
-                    if isinstance(assets, list):
-                        asset_fields = note_field_values(note_text, "visual.asset")
-                        if len(asset_fields) != len(assets):
+                compact_note = re.sub(r"\s+", "", note_text)
+                minimum_chars = 20 if slide_number == 1 else 40
+                if len(compact_note) < minimum_chars:
+                    result.error(
+                        f"slide {slide_number}: oral speaker notes are too short "
+                        f"({len(compact_note)} characters; require at least {minimum_chars})"
+                    )
+                    short_notes += 1
+                contaminated = False
+                if notes_talk_only:
+                    for pattern in NOTE_METADATA_PATTERNS:
+                        if re.search(pattern, note_text):
                             result.error(
-                                f"slide {slide_number}: speaker notes require exactly one non-empty "
-                                f"visual.asset field per planned asset ({len(assets)} expected, {len(asset_fields)} found)"
+                                f"slide {slide_number}: talk-only speaker notes contain forbidden metadata /{pattern}/"
                             )
-                        for asset in assets:
-                            candidates = provenance_candidates(asset)
-                            if not candidates or not any(
-                                candidate in field_value
-                                for field_value in asset_fields
-                                for candidate in candidates
-                            ):
-                                result.error(
-                                    f"slide {slide_number}: no visual.asset field identifies one planned visual asset"
-                                )
-                            else:
-                                note_assets_verified += 1
+                            contaminated = True
+                    if not contaminated and len(compact_note) >= minimum_chars:
+                        talk_only_notes += 1
+                    elif contaminated:
+                        metadata_contaminated_notes += 1
             else:
                 result.error(f"slide {slide_number}: missing speaker notes part")
 
         planned_cover_count = sum(
             isinstance(item, dict) and item.get("type") == "cover" for item in planned_slides
         ) if plan else 1
+        if plan:
+            ideology_positions = [
+                index
+                for index, item in enumerate(planned_slides, start=1)
+                if isinstance(item, dict) and item.get("type") == "ideology"
+            ]
+            if len(ideology_positions) != 1 or ideology_positions[0] > 5:
+                result.error(
+                    f"plan/export requires exactly one lesson-related ideology slide within slides 1–5; found {ideology_positions}"
+                )
+            if not prohibit_identity_footer:
+                result.error("plan displayPolicy.showCourseIdentityFooter must be false")
+            if not prohibit_page_numbers:
+                result.error("plan displayPolicy.showPageNumber must be false")
+            if not notes_talk_only:
+                result.error('plan speakerNotesPolicy must be "talk-only"')
         non_cover = max(len(slide_paths) - planned_cover_count, 1)
         image_ratio = image_pages / non_cover
         multi_ratio = multi_image_pages / non_cover
@@ -544,11 +635,10 @@ def audit_deck(
             "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
             "slides": len(slide_paths),
             "notes": note_pages,
-            "notesWithSources": notes_with_sources,
-            "notesWithKnowledgeSource": notes_with_knowledge_source,
-            "notesWithVisualKind": notes_with_visual_kind,
-            "notesWithVisualPurpose": notes_with_visual_purpose,
-            "noteAssetsVerified": note_assets_verified,
+            "talkOnlyNotes": talk_only_notes,
+            "metadataContaminatedNotes": metadata_contaminated_notes,
+            "shortNotes": short_notes,
+            "pageNumberViolations": page_number_violations,
             "meaningfulPictureSlides": image_pages,
             "meaningfulPictureSlideRatio": round(image_ratio, 4),
             "multiPictureSlides": multi_image_pages,
@@ -563,7 +653,10 @@ def audit_deck(
             "estimatedTextCapacityViolations": text_capacity_violations,
             "shrinkAutofitViolations": shrink_autofit_violations,
             "forbiddenActivityHits": activity_hits,
+            "questionAnswerLabelHits": answer_label_hits,
+            "courseIdentityFooterViolations": identity_footer_violations,
             "plannedAssetsVerified": planned_assets_verified,
+            "generatedPosterTitlesVerifiedByAlt": generated_poster_titles_verified_by_alt,
         }
     return result
 

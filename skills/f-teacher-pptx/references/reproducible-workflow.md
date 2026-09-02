@@ -65,7 +65,8 @@ Save the final zero-error, zero-warning JSON report and its exact command/exit c
 - Name objects by semantic role (`标题`, `正文-1`, `截图-设置窗口`, `图注-1`) so inspection can distinguish typography roles.
 - Calibrate the runtime's font-size unit with a one-slide export. If exported OOXML records roughly 0.75 pt per builder unit, multiply desired final point sizes by 1.333 in the builder; verify the final file rather than trusting source constants.
 - Put connectors behind nodes, and keep connectors away from labels.
-- Add speaker notes with knowledge and visual provenance on every slide.
+- Add talk-only speaker notes on every slide. Put knowledge and visual provenance in `source-notes.txt`, the lesson plan, asset records, build manifest, and QA evidence—not in the PPTX notes.
+- Omit slide-number placeholders and manual page-number shapes from every slide and layout.
 - Write one `build/lesson_NN-build.json` with the builder record `{path, sha256}`, `sourceInventorySha256`, `planSha256`, sorted unique `assetSha256s`, runtime fields `{node, nodeModules, binDir, nodeVersion, artifactToolVersion}`, the exact `exportCommand`, optional deterministic `seed`, and `outputPptxSha256`. Paths may be absolute or relative to the build manifest. A build cannot be called reproducible when only its output is retained.
 
 ## 6. Static export audit
