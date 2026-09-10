@@ -5,6 +5,10 @@ description: Use when the user has a method or technique idea, optional applicat
 
 # F Guidance Builder V1
 
+## Execution contract
+
+Read [references/execution-contract.md](references/execution-contract.md) at startup, resume, and correction. Initialize `pipeline-state.json` from `assets/pipeline-definition.json` using `scripts/pipeline_state.py --init` with the state path as its positional argument. Maintain the Markdown ledger as its readable view. Validate `--before <stage-id>` before starting a stage and `--complete` before delivery. The JSON definition is the canonical stage list; the workflow below defines the substantive gates. Record current user preferences and authorized scope once in a versioned run-local contract. This skill does not change the selected model or global settings.
+
 ## Overview
 
 Use this skill before `f-research-v1`. Its job is to select or validate a publishable application scenario, then produce a guidance Markdown that satisfies `f-research-v1/references/guidance-file-spec.md` or the bundled copy at `references/f-research-guidance-file-spec.md`. Do not run experiments or write the paper here.
@@ -43,7 +47,7 @@ Do not scatter generated files directly under `auto-paper/` or the workspace roo
 
 ## Sequential Execution Integrity
 
-Create `guidance-pipeline-state.md` inside each selected paper-title folder before the CCFA startup deliberation. Its canonical order is `CCFA-startup -> G0 -> G1 -> G2 -> G3 -> G4 -> G5 -> G6 -> G7 -> G8 -> validation -> handoff`. Every stage must be recorded as `pending`, `running`, `passed`, `blocked`, `failed`, or `superseded`; `skipped` is not a valid state.
+Create `guidance-pipeline-state.md` inside each selected paper-title folder before the CCFA startup deliberation. Its canonical order is `CCFA-startup -> G0 -> G1 -> G2 -> G3 -> G4 -> G5 -> G6 -> G7 -> G8 -> validation -> handoff`. Every stage must be recorded as `pending`, `running`, `passed`, `blocked`, or `superseded`; `skipped` is not a valid state.
 
 Do not begin a stage until its immediate predecessor is recorded `passed`. A failed scenario may move to another scenario, but the replacement must restart from `CCFA-startup` and run every gate in order. A repair may revisit an earlier gate, but it must never mark a later gate passed using stale evidence. The final handoff is invalid unless the state ledger proves that every required stage passed in canonical order.
 
@@ -70,6 +74,9 @@ Store the resulting `ccfa-startup-packet/` inside the selected paper-title folde
 `startup-decision.md` must be `proceed`, `revise`, `pivot-with-rescue-route`, or `needs-evidence`. Only `proceed` may enter G0. A low current-readiness score is not a rejection by itself, but an unaddressed fatal risk, missing mechanism, unavailable baseline, or infeasible evidence plan is a block.
 
 ### Strong-result feasibility contract
+
+Also write `feasibility-contract.json` in the CCFA packet using [references/feasibility-schema.md](references/feasibility-schema.md). It is a machine-checkable index into the substantive Markdown evidence; the validator does not establish scientific validity. At validation, register the final guidance and packet as stage evidence rather than mutating the startup execution contract.
+
 
 The contract makes the later P5 strong-result lock realistic without weakening it. For every main claim it must define:
 
@@ -126,7 +133,7 @@ Use `references/source-verification.md` when deciding whether evidence is strong
 
 ## Scenario Selection
 
-When the user does not provide an application scenario, generate 3-6 candidate scenarios and screen them through G1-G8. Prefer scenarios with:
+When the user does not provide an application scenario, generate 3-6 candidate scenarios. Evaluate each in canonical order from CCFA-startup through G0-G8; rejected candidates retain their failed gate and do not advance. Reuse unchanged sourced evidence only after checking applicability to each candidate. Prefer scenarios with:
 
 - Directly public datasets and mature metrics.
 - Current research heat from recent papers, benchmarks, regulations, or deployment needs.
@@ -187,7 +194,7 @@ Also output:
 - `ccfa-startup-packet/` with the deliberation, red-team review, and strong-result feasibility contract.
 - an appended entry in `auto-paper/generated-research-directions.md` recording the generated research direction.
 
-Run `scripts/validate_guidance.py <guidance.md>` before handing off to `f-research-v1`. Fix missing sections before finalizing.
+Run `scripts/validate_guidance.py <guidance.md> --strict --packet <ccfa-startup-packet-directory>` before handing off to `f-research-v1`. Fix missing sections before finalizing.
 
 ## Blocking Rules
 

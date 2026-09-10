@@ -8,8 +8,8 @@ Update this file after every stage. This file must live under the run root creat
 - Guidance directory:
 - Run root under guidance directory:
 - Artifact manifest:
-- Single final PDF page policy: `>20 pages` / `user-waived`
-- Final template policy: `unrestricted-template` / `limited-template-with-user-waiver`
+- Single final PDF page policy: current journal limits / `>20 pages when no journal limit exists` / user-selected policy
+- Final template policy: current target-journal template when specified; otherwise contract-selected template
 - Path-containment status: `pending` / `passed` / `blocked`
 
 All process files and deliverables must be under the run root. External paths may be listed only as explicitly authorized execution sources or tool-cache sources after the accepted artifact has been copied into the run root.
@@ -18,10 +18,14 @@ All process files and deliverables must be under the run root. External paths ma
 |---|---|---|---|---|---|
 | P0 | Load guidance file and create guidance-directory run root | pending |  |  |  |
 | P1 | Validate guidance file | pending |  |  |  |
+| P1A | Strong-result feasibility lock | pending |  |  |  |
+| P1B | CCFA pre-experiment review and integrity audit | pending |  |  |  |
 | P2 | Local Conda experiment protocols and setup checks | pending |  |  |  |
 | P3 | Baseline-first execution gate | pending |  |  |  |
+| P3A | Baseline-evidence stop-loss review | pending |  |  |  |
 | P4 | Full guidance experiment execution | pending |  |  |  |
 | P5 | Strong-result lock and experiment evidence audit | pending |  |  |  |
+| P5A | CCFA pre-draft scientific review and integrity audit | pending |  |  |  |
 | P6 | AutoResearchClaw 16 PAPER_OUTLINE | pending |  |  |  |
 | P7 | AutoResearchClaw 17 PAPER_DRAFT | pending |  |  |  |
 | P8 | Figure/table generation and every-subsection insertion | pending |  |  |  |
@@ -39,7 +43,7 @@ All process files and deliverables must be under the run root. External paths ma
 | P20 | Final PDF recompile and sanity checks | pending |  |  |  |
 | P21 | Final delivery from guidance-directory run root | pending |  |  |  |
 
-Allowed statuses: `pending`, `running`, `blocked`, `passed`, `failed-needs-retry`, `infeasible-with-evidence`.
+Allowed statuses: `pending`, `running`, `passed`, `blocked`, `superseded`. Put experiment failure details in Notes. The canonical definition is `assets/pipeline-definition.json`; validate the matching JSON ledger before advancing.
 
 ## Path-Containment Audit
 
@@ -57,4 +61,4 @@ Allowed statuses: `pending`, `running`, `blocked`, `passed`, `failed-needs-retry
 
 | Artifact | Template/style | Page count | Requirement | Status | Notes |
 |---|---|---:|---|---|---|
-| `paper.pdf` | unrestricted template unless user waived page policy for a limited template |  | `>20 pages unless user-waived` | pending |  |
+| `paper.pdf` | current target template or contract-selected template |  | current journal limits, otherwise >20 pages unless user changes the default | pending |  |

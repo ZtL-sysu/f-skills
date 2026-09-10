@@ -5,6 +5,13 @@ description: "Create, expand, or rigorously audit step-by-step Word teaching gui
 
 # F Teacher Guide
 
+## Execution contract
+
+The numbered 10 build/workflow steps map one-to-one to `T1` through `T10` in the JSON definition. Internal repair loops reopen affected stages and invalidate the downstream suffix. For multiple packages, maintain a separate ledger per package; course-wide checks aggregate all required ledgers.
+
+
+Read [references/execution-contract.md](references/execution-contract.md) at startup, resume, and correction. Initialize `pipeline-state.json` from `assets/pipeline-definition.json` using `scripts/pipeline_state.py --init` with the state path as its positional argument. Maintain the Markdown ledger as its readable view. Validate `--before <stage-id>` before starting a stage and `--complete` before delivery. The JSON definition is the canonical stage list; the workflow below defines the substantive gates. Record current user preferences and authorized scope once in a versioned run-local contract. This skill does not change the selected model or global settings.
+
 Build a guide that an ordinary student can execute in order without reading source code, guessing omitted steps, or borrowing files from another package. Treat the guide, package files, screenshots, and acceptance checks as one artifact.
 
 ## Required companion workflow
@@ -24,6 +31,10 @@ For students with weak foundations, first secure one complete baseline, then add
 Read [references/guide-contract.md](references/guide-contract.md) before creating or substantially expanding a guide. Each required step must include the starting state, exact command or action, observable success criterion, one focused success-state image, and a recovery path. Do not use “自行探索”, “自主创新”, or another undefined task as a required completion condition unless the user explicitly requests it.
 
 When packaging files, every archive must be self-contained and extract to one English-named root folder. A guide may refer to generated runtime outputs, but every input resource it names must exist inside that root. Never make experiment 2 depend on experiment 1's extracted folder unless the user explicitly chooses that dependency.
+
+## Resume and evidence reuse
+
+Keep a package-level command ledger keyed by archive/input hashes, exact commands, platform, Conda environment, parameters, working directory and success evidence. After interruption inspect existing processes and resume from the earliest unverified state. Reuse evidence only when these dependencies match; a documentation-only edit does not invalidate unchanged parameter results, but changed student commands or package inputs do. The final clean-ZIP full execution in step 9 remains mandatory. Record platform-sensitive gaps precisely and continue host-verifiable work without claiming target-platform acceptance. See `references/execution-contract.md` for ordered reacceptance and invalidation.
 
 ## Build and verify
 

@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "pipeline": "f-submit-v1",
+  "stages": [
+    "S0",
+    "S1",
+    "S1A",
+    "S2",
+    "S3",
+    "S4",
+    "S5",
+    "S6",
+    "S7",
+    "S8",
+    "S9",
+    "S10"
+  ],
+  "statuses": [
+    "pending",
+    "running",
+    "passed",
+    "blocked",
+    "superseded"
+  ]
+}

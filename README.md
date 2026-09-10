@@ -11,9 +11,15 @@ Public collection of the currently installed `f-*` Codex skills plus the native 
 - `f-teacher-pptx`: create and audit image-rich, classroom-readable multi-lesson teaching decks.
 - `f-holdle`: execute and audit the HOLDLE v9-robust A-share research and consultation rules.
 - `f-holdle-v10`: execute the frozen HOLDLE v10 composite-champion configuration and rolling tests.
-- `spark-task-delegator`: selectively route objectively verifiable work to Luna and semantic judgment work to Terra after a delegation net-benefit check.
+- `spark-task-delegator`: delegate substantial independent work to native Luna with medium reasoning when beneficial; keep complex judgment and final synthesis in the primary agent.
 
 Each skill is stored under `skills/<skill-name>/` and retains its `SKILL.md`, scripts, references, assets, and UI metadata where present.
+
+## GPT-6 Astra workflow update — 2026-09-10
+
+The five research, submission, and teaching workflows now include canonical stage definitions, ordered JSON execution ledgers, evidence hashes, versioned contracts, recovery rules, and proportional revalidation. The research workflow retains its strong-result and CCFA review gates, including P1A, P1B, P3A, and P5A. Feasibility checks now include a structured evidence packet, finite experiment budgets, and held-out test isolation.
+
+These are workflow improvements; installing a skill does not switch the host model or configure an external API executor. HOLDLE skills retain their existing portable public versions. The delegation skill reflects the latest local Luna-medium policy.
 
 ## Installation
 

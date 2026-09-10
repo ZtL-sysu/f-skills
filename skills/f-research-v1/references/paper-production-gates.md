@@ -25,11 +25,11 @@ Allowed statuses: `strong-pass`, `needs-rerun`, `missing`, `blocked-needs-user-g
 This gate passes only when:
 
 - every dataset, baseline, method variant, ablation, metric, statistical check, robustness/efficiency check, and required result artifact from the guidance file is complete;
-- the strongest feasible baseline has been run, or the guidance has been revised by the user to accept a documented substitute;
+- the strongest feasible baseline has been run, or a versioned guidance revision under `research-recovery.md` has accepted a documented substitute after renewed feasibility/review gates;
 - the guidance's `expected_strong` target is met for the paper's main claims;
 - raw logs, configs, seeds, metrics, environment records, and analysis notes exist for audit and replots.
 
-If a required experiment is infeasible or the strong expected result cannot be reached after rigorous iteration, stop before writing. Preserve the evidence and ask the user whether to revise the guidance contract; do not continue with a downgraded paper by default.
+If a required experiment is infeasible or the strong target cannot be reached, enter `research-recovery.md` correction before writing. Redesign within authorized scope, preserve negative evidence, and ask only for an out-of-scope change; do not lower the failed target to pass.
 
 ## Gate 1: Evidence-to-Claim
 
@@ -38,7 +38,7 @@ Before drafting, create a claim table and check it against the original guidance
 | Claim | Evidence | Figure/Table | Citation support | Risk |
 |---|---|---|---|---|
 
-Claims that lack experiment or citation support must trigger an experiment repair, citation repair, or user-approved guidance revision. Do not silently drop or weaken claims to bypass the strong-result lock.
+Claims that lack experiment or citation support must trigger an experiment repair, citation repair, or versioned guidance revision under `research-recovery.md`. Do not silently drop or weaken claims to bypass the strong-result lock.
 
 Also create or update `paper-guidance-audit.md`:
 

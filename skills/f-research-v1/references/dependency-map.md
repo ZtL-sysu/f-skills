@@ -1,6 +1,6 @@
 # Dependency Map
 
-This skill is a dispatcher. Prefer installed skills by name. If they are unavailable, use the copies in `bundled-skills/` as reference material and ask the user to install or copy them into their skill directory.
+This skill is a dispatcher. Prefer installed skills by name. If they are unavailable, use available copies in `bundled-skills/` as reference material and continue when they provide the required capability. Report the fallback. Request a missing dependency only when no available equivalent can satisfy the actual gate; do not infer that a reference copy supplies an executable CLI.
 
 ## Names and Aliases
 

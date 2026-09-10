@@ -94,7 +94,7 @@ Maintain `experiment-traceability.md` from the first protocol onward. It must ma
 
 Allowed statuses: `planned`, `running`, `done`, `failed-needs-retry`, `changed-with-rationale`, `infeasible-with-evidence`.
 
-`infeasible-with-evidence` is allowed as an experiment-tracking status, but it does not pass the P5 strong-result lock unless the user revises the guidance contract. Do not treat infeasibility as permission to enter paper writing.
+`infeasible-with-evidence` is allowed as an experiment-tracking status; it enters correction under `research-recovery.md` and cannot pass P5 until the current versioned contract and evidence satisfy all gates. Do not treat infeasibility as permission to enter paper writing.
 
 For each required experiment:
 
@@ -112,7 +112,7 @@ For each required experiment:
    - add ablations to isolate the failure;
    - revisit literature for known fixes;
    - record every change and why it was tried.
-9. Continue until the traceability matrix shows every required experiment is `done` with evidence and `experiment-completion-lock.md` shows `strong-pass` for the main claims. If repeated honest attempts show the target is infeasible, preserve the evidence and ask the user to revise the guidance before writing.
+9. Continue until the traceability matrix shows every required experiment is `done` with evidence and `experiment-completion-lock.md` shows `strong-pass` for the main claims. If repeated honest attempts show the target is infeasible, follow `research-recovery.md`: preserve evidence, redesign within authorized scope, and request direction only outside that scope.
 
 ## Guidance-Conformance Checkpoints
 
@@ -127,7 +127,7 @@ If the workflow drifts from the guidance file, pause the current direction, repa
 
 ## Git Policy
 
-The user explicitly requested no git submission. Do not commit, push, open PRs, or rewrite git history. It is fine to create and modify files in the workspace.
+Git actions follow the current user's task authorization. Research execution alone does not imply publication, pushing or PR creation; do not preserve a past task's no-git preference as a universal user instruction.
 
 ## Output Artifacts
 

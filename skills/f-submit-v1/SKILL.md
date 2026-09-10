@@ -5,6 +5,10 @@ description: Use when a finished manuscript or source package needs journal-spec
 
 # F Submit V1
 
+## Execution contract
+
+Read [references/execution-contract.md](references/execution-contract.md) at startup, resume, and correction. Initialize `pipeline-state.json` from `assets/pipeline-definition.json` using `scripts/pipeline_state.py --init` with the state path as its positional argument. Maintain the Markdown ledger as its readable view. Validate `--before <stage-id>` before starting a stage and `--complete` before delivery. The JSON definition is the canonical stage list; the workflow below defines the substantive gates. Record current user preferences and authorized scope once in a versioned run-local contract. This skill does not change the selected model or global settings.
+
 ## Overview
 
 This is a strict pre-submission review and revision workflow for an already written paper. It does not run new experiments by default. It benchmarks the manuscript against 10 recent, similar, high-impact SCI-indexed papers, then reviews and improves each manuscript module until every module reaches the top-40% quality threshold among the comparator set.
@@ -14,6 +18,8 @@ The comparator workflow evaluates presentation quality; it must not hide scienti
 All local process files and final deliverables must live under the directory containing the submitted manuscript. At S0, resolve the absolute manuscript path, set `paper_dir = dirname(manuscript_file)`, and create one independent run root under it, such as `<paper_dir>/f-submit-v1-run-<YYYYMMDD-HHMMSS>-<slug>/`. Store every extraction, search record, comparator table, review matrix, revision, audit note, and final deliverable inside that run root.
 
 The submitted manuscript and its original companion files are immutable inputs. Never edit, overwrite, rename, move, or delete the original manuscript, original PDF, original TeX project files, figures, tables, bibliography, or source package. If revision is needed, copy the minimum required source files into the run root and write revised files only there. The final revised manuscript/PDF must be delivered from the run root, not by replacing the submitted manuscript in place.
+
+Read [references/submission-recovery.md](references/submission-recovery.md) for S1A evidence recovery, frozen comparator scoring, and S7/S8 convergence. Required CCFA reviews and existing-evidence repairs are part of the authorized submission workflow; new experiments follow that reference's explicit scope check.
 
 ## Required Capabilities
 
@@ -39,7 +45,7 @@ Execute this pipeline in order. Maintain `pipeline-state.md` from `assets/pipeli
 
 ## Sequential Execution Integrity
 
-`pipeline-state.md` is the execution authority. Its canonical order is `S0 -> S1 -> S1A -> S2 -> S3 -> S4 -> S5 -> S6 -> S7 -> S8 -> S9 -> S10`. Every stage must be recorded as `pending`, `running`, `passed`, `blocked`, or `superseded`; `skipped` is never valid.
+`pipeline-state.json` is the structural execution authority; `pipeline-state.md` is its readable view. Its canonical order is `S0 -> S1 -> S1A -> S2 -> S3 -> S4 -> S5 -> S6 -> S7 -> S8 -> S9 -> S10`. Every stage must be recorded as `pending`, `running`, `passed`, `blocked`, or `superseded`; `skipped` is never valid.
 
 Only a recorded `passed` predecessor authorizes the next stage. S7/S8 may iterate, but every revision and re-score must be logged. If the scientific/integrity precheck at S1A exposes a blocker, later comparator or prose work cannot bypass it; return to the earliest affected stage and re-run all dependent gates. S10 is invalid unless the state ledger proves the accepted revision passed every required stage in canonical order.
 

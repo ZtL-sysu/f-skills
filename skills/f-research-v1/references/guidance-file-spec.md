@@ -18,7 +18,7 @@ The file must contain:
 
 ## Blocking Gaps
 
-Stop and ask for a revised guidance file when any of these are missing:
+Complete missing elements from available evidence within authorized scope before execution; request only material missing choices. The required elements are:
 
 - No testable method or hypothesis.
 - No datasets or no feasible substitute dataset strategy.
@@ -80,8 +80,8 @@ Save the contract in the project artifacts so later writing, figures, and citati
 Default extraction values:
 
 - `local_artifact_policy`: all local process files and deliverables under a run root inside the directory containing the guidance file.
-- `page_length_policy`: full-length manuscript more than 20 compiled PDF pages unless explicitly waived by the user.
-- `single_final_pdf_template_policy`: produce exactly one final compiled PDF; use an unrestricted template when a limited venue template conflicts with the page-length policy, unless the user explicitly waives the page-length policy.
+- `page_length_policy`: current target-journal limits first; otherwise more than 20 compiled PDF pages unless the user changes the default.
+- `single_final_pdf_template_policy`: produce exactly one final compiled PDF using the current target-journal template where specified; journal limits take precedence over default page targets.
 
 ## Traceability Requirements
 
@@ -94,4 +94,4 @@ Include every dataset, baseline, method variant, ablation, metric, expected resu
 
 ## Integrity Rule
 
-The expected results guide optimization, not reporting. If the method cannot reach the strong expected target after serious iteration, preserve the best honest result and the failure analysis, but do not enter paper writing until the user revises the guidance contract or authorizes a different target. Never invent numbers, hide failed runs, or present simulated placeholders as experiments.
+The expected results guide optimization, not reporting. If the method cannot reach the strong expected target after serious iteration, preserve the best honest result and the failure analysis, but do not enter writing until correction under `research-recovery.md` yields a versioned contract and evidence passing all required gates; obtain new authorization only for a material scope expansion. Never invent numbers, hide failed runs, or present simulated placeholders as experiments.

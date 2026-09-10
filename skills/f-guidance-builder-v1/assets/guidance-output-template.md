@@ -90,6 +90,10 @@ Describe the proposed method, hypothesis, adaptation, or contribution in concret
 - Disk:
 - Max runtime per run:
 - Max total runs:
+- Frozen train/validation/test identifiers and validation-only selection policy:
+- Full search/trial ledger and held-out test isolation:
+- CCFA packet path and feasibility-contract.json:
+- Resource budget exhaustion and next-candidate decision rule:
 - Scaling fallback:
 - Stopping criteria:
 

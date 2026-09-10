@@ -54,7 +54,7 @@ Describe the proposed method, hypothesis, or contribution in concrete terms.
 - Secondary metrics:
 - Statistical test / confidence reporting:
 
-### Expected Results
+## Expected Results
 
 - Minimum acceptable result:
 - Strong result:
@@ -77,6 +77,10 @@ Describe the proposed method, hypothesis, or contribution in concrete terms.
 - GPU/CPU:
 - Max runtime per run:
 - Max total runs:
+- Frozen train/validation/test protocol and split identifiers:
+- Validation-only selection policy and final test isolation:
+- Trial ledger and total search-budget limit:
+- Claim-level feasibility contract and CCFA packet path:
 
 ## Figure and Table Plan
 
@@ -119,4 +123,4 @@ List every required experiment and artifact so the workflow can verify coverage 
 - Preferred writing language:
 - Preferred LaTeX/template/venue style:
 - Local artifact policy: all process files and final deliverables must be stored under a run folder inside the directory containing this guidance file.
-- Page policy: produce exactly one final compiled manuscript PDF of more than 20 pages unless explicitly waived. If the preferred venue template has a hard page limit that conflicts with this requirement, use an unrestricted manuscript template for the single final PDF unless the page requirement is explicitly waived.
+- Page policy: produce exactly one final compiled manuscript PDF. Current target-journal template and hard limits govern; when none exist, default to more than 20 pages unless the user changes the preference.

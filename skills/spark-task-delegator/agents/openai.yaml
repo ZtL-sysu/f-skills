@@ -1,7 +1,7 @@
 interface:
-  display_name: "原生 Luna–Terra 任务路由器"
-  short_description: "仅在净收益为正时按任务性质委派 Luna 或 Terra"
-  default_prompt: "Use $spark-task-delegator to delegate only when an independent worker is likely to shorten the critical path or materially improve confidence after coordination costs; route objective work to native Luna-low and semantic judgment to native Terra-low."
+  display_name: "Luna 按需委派"
+  short_description: "按需委派独立工作给 Luna 中等推理，兼顾上下文、速度与验收质量"
+  default_prompt: "Use $spark-task-delegator to delegate worthwhile independent work to native Luna with medium reasoning and verify concise results."
 
 policy:
   allow_implicit_invocation: true

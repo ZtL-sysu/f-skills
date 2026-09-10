@@ -1,6 +1,6 @@
 # Module Quality Rubric
 
-Use this rubric in S6/S8. Score the user's manuscript and each of the 10 comparator papers module by module.
+Use this rubric in S6/S8. Score the user's manuscript and each of the 10 comparator papers module by module. Follow `submission-recovery.md`: freeze comparator sources, rubric and score evidence before revision, retain confidence, and treat the fourth-highest threshold as an operational comparison rather than a calibrated acceptance probability. Re-score affected manuscript modules against the frozen comparator scores; do not move the threshold to obtain a pass.
 
 ## Contents
 
