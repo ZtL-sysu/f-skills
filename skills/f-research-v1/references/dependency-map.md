@@ -22,3 +22,5 @@ If a recipient copies this folder as a single skill, the main `f-research-v1` sk
 ## Priority
 
 Use installed current skills first because they may be newer. Use vendored copies only when installed versions are missing, renamed, or unavailable.
+
+For manuscript work, resolve these paths through `scripts/writing_adapter.py` and apply `references/scientific-writing-contract.md` above subordinate advice, including installed-first copies. Generic humanizer personality guidance and conference-specific quantities never override the academic profile or author/journal constraints. The builder records the resolved path/hash; it does not assume a subskill is an executable CLI. See `references/writing-adapter.md` for actual invocation and external ARC isolation status.

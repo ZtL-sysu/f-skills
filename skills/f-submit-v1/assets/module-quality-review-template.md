@@ -2,7 +2,7 @@
 
 Top-40% threshold: for each module, sort the 10 comparator scores descending and use the 4th-highest score as the pass threshold.
 
-| Module | Comparator score range | 4th-highest comparator threshold | User score | Status | Main gaps | Required revision |
+| Module | Comparator score range | 4th-highest comparator threshold (operational, not calibrated) | User score | Status | Main gaps | Required revision / concern-to-edit |
 |---|---:|---:|---:|---|---|---|
 | Title |  |  |  |  |  |  |
 | Abstract |  |  |  |  |  |  |
@@ -26,6 +26,8 @@ Allowed statuses: `passed`, `failed-needs-revision`, `blocked-needs-author-input
 |  |  |  |  |
 
 ## Narrative Closure Summary
+
+Core claims require full closure. Supporting, diagnostic, and negative findings may have a local role and interpretation without being repeated in every section.
 
 | Selling point | Gap/claim location | Method/design embodiment | Supporting result | Discussion interpretation | Conclusion callback | Status |
 |---|---|---|---|---|---|---|

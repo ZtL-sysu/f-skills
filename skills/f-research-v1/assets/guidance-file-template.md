@@ -18,6 +18,17 @@ Describe the proposed method, hypothesis, or contribution in concrete terms.
 - What evidence should convince the reader:
 - Main claim:
 
+### Writing Handoff (optional for existing guidance)
+
+- Central scientific question and target readers:
+- Domain/theory problem -> design requirement -> proposed choice:
+- Contribution type (method / empirical comparison / resource trade-off / theory / other):
+- planned_claim (not an observed result):
+- observed_finding: pending real evidence at P5A/P6
+- Writing preferences/protected ranges/declaration mode and their author source:
+- Explicit author or current journal length/citation constraints and sources:
+- Update the narrative from accepted observations at P5A/P6; do not promote the plan to a finding.
+
 ## Paper Outline
 
 1. Introduction:
@@ -84,18 +95,18 @@ Describe the proposed method, hypothesis, or contribution in concrete terms.
 
 ## Figure and Table Plan
 
-- Overall framework/architecture Figure 1, generated with GPT image generation (`image2`) from the user's reference-template style:
+- Optional framework/architecture figure, if useful after method finalization; use the actual method and scientific labels:
 - Data visualization Figure 2:
 - Main result table:
 - Ablation table:
 - Robustness/error-analysis figure or table:
 - Efficiency/resource figure or table:
 
-### Result Subsection Visual Rules
+### Evidence-Driven Figure/Table Decisions
 
-Every subsection under `4 Experiments and Results` must have at least one relevant nearby figure or table. Do not create a subsection without an assigned artifact; merge its material into a supported subsection or keep it in the parent-section introduction.
+Use visuals when they help readers evaluate a claim or inspect a result. No fixed count or per-subsection requirement applies; decide final artifacts after evidence stabilizes. Cite each selected artifact where its evidence is first discussed.
 
-| Planned subsection | Scientific purpose | Required figure/table | Source experiment/artifact |
+| Scientific question/claim | Candidate visual if useful | Evidence source | Decision after results |
 |---|---|---|---|
 |  |  |  |  |
 
@@ -123,4 +134,4 @@ List every required experiment and artifact so the workflow can verify coverage 
 - Preferred writing language:
 - Preferred LaTeX/template/venue style:
 - Local artifact policy: all process files and final deliverables must be stored under a run folder inside the directory containing this guidance file.
-- Page policy: produce exactly one final compiled manuscript PDF. Current target-journal template and hard limits govern; when none exist, default to more than 20 pages unless the user changes the preference.
+- Page policy: current target-journal limits and explicit author preference; if neither is specified, use a length proportionate to the evidence and scope, with no page-count target.

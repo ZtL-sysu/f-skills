@@ -6,6 +6,16 @@ Use this reference at run startup, resume, correction, and final delivery. The o
 
 Record an immutable run-local `execution-contract-v1.md`: user goal, authorized operations, inputs, scope, resource/runtime envelope, output root, quality requirements, and relevant user preferences. Preserve the user's current instructions over skill defaults, subject to host/system constraints. Routine work and explicitly integrated CCFA transitions inside that scope need no renewed confirmation. Do not change global CCFA handoff settings. Questions are for material missing choices or scope expansion, not repeated approval of already authorized steps. Cite the exact instruction and completed preparation when a genuine blocker requires user direction.
 
+When prose or metadata edits are in scope, add these optional fields to that same contract, using only current explicit user authorization or established current instructions as their source:
+
+- `edit_scope`: authorized classes such as `structural`, `prose-only`, `figures`, or `metadata`; do not infer broader scope from a writing request.
+- `protected_sections`: exact section/range plus immutable baseline path/hash and current-copy path; use unique delimiters or protect the full file.
+- `protected_artifacts`: immutable artifact paths and SHA-256 values, including author metadata or results when they must remain unchanged.
+- `declaration_mode`: `preserve`, `author-managed`, or `journal-routed`, with its source. Keep author-managed items pending until the author resolves them.
+- `allow_new_experiments`: explicit authorization source and boolean; default `false` when absent. Writing or submission-readiness work alone never authorizes experiments.
+
+Record a configurable S7/S8 edit-review budget in the contract; default to 3 passes. A pass is a substantive edit followed by its dependent checks. Stop after two consecutive rounds without fewer named defects; diagnose evidence, packet, or argument problems and leave unresolved items blocked instead of continuing stylistic churn. Do not rewrite already sound modules to consume the budget.
+
 Record installed dependency names, versions or hashes, available tools, actual model/effort if exposed, Conda environment and device. Do not infer the running model from this file. Preserve the selected model and effort; request stronger reasoning only when needed and supported. Astra API tool-calling adaptations belong in the actual API executor, not skill prose. If one is used, verify its current official compatibility before execution; do not assume an external CLI inherits this chat's model.
 
 Initialize once, inside the run root:
@@ -35,7 +45,7 @@ For a run that has only an older Markdown ledger, initialize a pending JSON ledg
 
 After interruption read the latest contract, JSON ledger, correction record, and artifact index; check existing process/job identifiers before restarting work. Rehash accepted evidence and resume the first unfinished stage. Do not spawn duplicate training, builds, or image jobs. A mid-task user update preserves completed work unless its dependencies changed; log changed constraints and invalidate affected evidence.
 
-Use stable, versioned outputs for accepted stages. Do not hash a mutable shared ledger as stage evidence. Record an input manifest listing actual dependencies and their hashes for large jobs, and verify those dependencies before reuse. A matching manifest file alone does not prove its listed dependencies remain unchanged.
+Use stable, versioned outputs for accepted stages. Do not hash a mutable shared ledger as stage evidence. Record an input manifest listing actual dependencies and their hashes for large jobs, and verify those dependencies before reuse. A matching manifest file alone does not prove its listed dependencies remain unchanged. Bind each accepted manuscript/lint/package check to the exact current manuscript/source/PDF hashes and applicable contract, profile, rubric, and renderer versions. Any later text, caption, visible figure label, declaration, metadata, or source change invalidates affected checks and dependent final checks; recompute hashes and rerun them against final submission-facing files. Verify protected ranges against their baseline hashes before and after editing; do not silently edit protected content. A hash verifies byte identity only, not scientific meaning or PDF-to-source equivalence.
 
 ## Proportionate checking and delegation
 

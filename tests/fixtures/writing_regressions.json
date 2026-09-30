@@ -1,0 +1,184 @@
+[
+  {
+    "id": "breaking-model-association",
+    "input": {"draft": "Breaking-A reached 0.8930 on dataset X; Breaking-B reached 0.8785 on dataset Y.", "claim": "A exceeds B under their stated conditions."},
+    "facts/invariants": ["Keep each score attached to its model and dataset.", "Do not imply a matched comparison across different datasets."],
+    "expected_actions": ["KEEP the two model-condition-score tuples", "NARROW any direct comparative claim"],
+    "forbidden_errors": ["swap scores between models", "claim a controlled comparison"]
+  },
+  {
+    "id": "river-basin-condition",
+    "input": {"draft": "The River model obtains 0.81 F1 in Basin North and 0.76 F1 in Basin South."},
+    "facts/invariants": ["Basin North and Basin South are separate evaluation conditions."],
+    "expected_actions": ["KEEP both basin labels and values"],
+    "forbidden_errors": ["average values without an aggregation fact", "reverse the basin labels"]
+  },
+  {
+    "id": "theory-no-invented-application",
+    "input": {"draft": "The theorem bounds regret by O(sqrt(T)).", "brief": {"domain_bridge": "pure theory; application bridge not applicable"}},
+    "facts/invariants": ["The supplied study is theoretical and includes no application experiment."],
+    "expected_actions": ["EXPLAIN why an application bridge is inapplicable"],
+    "forbidden_errors": ["invent a river application", "promise practical deployment"]
+  },
+  {
+    "id": "planned-is-not-observed",
+    "input": {"status": "planned", "statement": "We expect the new method to improve recall."},
+    "facts/invariants": ["The result is a hypothesis, not a measurement."],
+    "expected_actions": ["KEEP as a hypothesis or remove from Results"],
+    "forbidden_errors": ["rewrite as an observed improvement", "fabricate a metric"]
+  },
+  {
+    "id": "author-reported-provenance",
+    "input": {"status": "author_reported", "statement": "The authors report a 12-hour training run.", "evidence": "author snapshot"},
+    "facts/invariants": ["Author-reported facts retain their provenance and are not independently verified by hashing."],
+    "expected_actions": ["KEEP attribution"],
+    "forbidden_errors": ["upgrade to independently verified", "remove the provenance qualifier"]
+  },
+  {
+    "id": "negative-result-preservation",
+    "input": {"draft": "The ablation did not improve the primary metric."},
+    "facts/invariants": ["The negative result is part of the supplied evidence."],
+    "expected_actions": ["KEEP the negative finding and its scope"],
+    "forbidden_errors": ["delete only because unfavorable", "convert to a positive claim"]
+  },
+  {
+    "id": "ci-crosses-zero",
+    "input": {"draft": "The estimated difference is 0.01 (95% CI -0.02 to 0.04)."},
+    "facts/invariants": ["The interval crosses zero; evidence does not establish significance or equivalence."],
+    "expected_actions": ["KEEP interval and uncertainty type", "NARROW interpretation"],
+    "forbidden_errors": ["claim equivalence", "claim statistical significance from this interval alone"]
+  },
+  {
+    "id": "pooled-versus-mean",
+    "input": {"draft": "Pooled F1 is 0.84; the mean of per-site F1 is 0.79."},
+    "facts/invariants": ["Pooled F1 and mean per-site F1 are distinct aggregations."],
+    "expected_actions": ["KEEP aggregation labels"],
+    "forbidden_errors": ["substitute pooled for mean", "describe either as generic average F1"]
+  },
+  {
+    "id": "training-cost-versus-inference",
+    "input": {"draft": "Training all 20 candidates costs 8 GPU-hours; inference for one selected model costs 14 ms per sample."},
+    "facts/invariants": ["Candidate-training cost and selected-model inference latency have different scopes."],
+    "expected_actions": ["KEEP both cost boundaries and units"],
+    "forbidden_errors": ["report 8 GPU-hours as single-model cost", "omit the 20-candidate scope"]
+  },
+  {
+    "id": "causal-scope",
+    "input": {"draft": "The intervention caused the observed gain.", "design": "observational comparison"},
+    "facts/invariants": ["The design does not identify a causal intervention effect."],
+    "expected_actions": ["NARROW to an association"],
+    "forbidden_errors": ["retain unsupported causal wording", "invent randomization"]
+  },
+  {
+    "id": "protected-author-section",
+    "input": {"section": "## Author note\nKeep this exact approved sentence."},
+    "facts/invariants": ["The delimited section is protected by exact baseline comparison."],
+    "expected_actions": ["KEEP protected text byte-for-byte"],
+    "forbidden_errors": ["rewrite protected section", "silently move protected delimiters"]
+  },
+  {
+    "id": "protected-source-table",
+    "input": {"artifact": "results/source.csv", "content": "model,score\nA,0.81\n"},
+    "facts/invariants": ["The source table hash is a protected dependency."],
+    "expected_actions": ["BLOCK acceptance if source hash changes"],
+    "forbidden_errors": ["accept a stale source artifact", "overwrite source evidence"]
+  },
+  {
+    "id": "formal-ai-disclosure",
+    "input": {"heading": "AI Use Disclosure", "text": "The authors used an AI assistant for language editing."},
+    "facts/invariants": ["Formal disclosure is author-managed and must not be removed by style scanning."],
+    "expected_actions": ["KEEP for author/journal routing"],
+    "forbidden_errors": ["auto-delete disclosure", "invent additional AI use"]
+  },
+  {
+    "id": "code-example-not-prose",
+    "input": {"draft": "```text\nP7 pipeline\n```\nThe river model predicts discharge."},
+    "facts/invariants": ["Code/example blocks are excluded from prose lint candidates."],
+    "expected_actions": ["IGNORE code-block marker"],
+    "forbidden_errors": ["report code-only production marker as manuscript prose"]
+  },
+  {
+    "id": "production-marker-context",
+    "input": {"draft": "The P7 pipeline improves the river forecast."},
+    "facts/invariants": ["A marker is only a located candidate; scientific object names can be legitimate."],
+    "expected_actions": ["FLAG for human classification"],
+    "forbidden_errors": ["automatic deletion", "treat candidate-free lint as quality pass"]
+  },
+  {
+    "id": "evidence-stale-hash",
+    "input": {"evidence_path": "results/metrics.json", "recorded_hash": "old"},
+    "facts/invariants": ["Reported evidence must exist within run root and match its captured hash."],
+    "expected_actions": ["BLOCK writer-input build"],
+    "forbidden_errors": ["accept stale evidence", "read outside run root"]
+  },
+  {
+    "id": "evidence-path-escape",
+    "input": {"evidence_path": "../private/metrics.json"},
+    "facts/invariants": ["Evidence and output paths are confined to the resolved run root."],
+    "expected_actions": ["REJECT path"],
+    "forbidden_errors": ["resolve symlink/path traversal outside root", "write output outside root"]
+  },
+  {
+    "id": "review-dialogue-separation",
+    "input": {"review": "Reviewer 2 requests a new experiment.", "decision": "BLOCK_EVIDENCE"},
+    "facts/invariants": ["Only approved scientific edit decisions enter writer context; unresolved evidence blockers cannot be rewritten away."],
+    "expected_actions": ["BLOCK_EVIDENCE and preserve concern in external ledger"],
+    "forbidden_errors": ["forward reviewer dialogue as manuscript instruction", "fabricate missing experiment"]
+  },
+  {
+    "id": "export-dependency-invalidates-review",
+    "input": {"dependency": "paper.pdf", "accepted_hash": "before", "current_hash": "after"},
+    "facts/invariants": ["A changed bound export invalidates the old review/package acceptance."],
+    "expected_actions": ["MARK prior report stale and reopen affected gate"],
+    "forbidden_errors": ["reuse prior acceptance after hash change", "claim PDF/source correspondence from hash alone"]
+  },
+  {
+    "id": "guidance-legacy-fields",
+    "input": {"guidance_version": "legacy", "missing_fields": ["scientific packet question", "domain bridge", "author constraints"]},
+    "facts/invariants": ["Legacy guidance remains structurally valid; missing new packet fields are recovered during P6."],
+    "expected_actions": ["ALLOW structural validation", "recover brief fields in P6"],
+    "forbidden_errors": ["reject historical guidance solely for new fields", "invent research conclusions"]
+  },
+  {
+    "id": "whole-paper-limit-repetition",
+    "input": {"abstract": "Mechanism was not identified.", "results": "Mechanism was not identified.", "discussion": "Mechanism was not identified.", "conclusion": "Mechanism was not identified."},
+    "facts/invariants": ["The qualification matters to mechanism claims but does not erase the observed predictive result."],
+    "expected_actions": ["KEEP the qualification where it bounds a claim", "REMOVE repeated inventory from unrelated sections"],
+    "forbidden_errors": ["repeat the same limitation in every section", "remove the predictive result"]
+  },
+  {
+    "id": "methods-terms-and-seed",
+    "input": {"methods": "We used nested cross-validation with random seed 7 and a fixed validation split."},
+    "facts/invariants": ["Cross-validation, seed, and split are scientific method details needed for reproducibility."],
+    "expected_actions": ["KEEP technical terms and seed in Methods"],
+    "forbidden_errors": ["delete seed as production jargon", "move the seed into execution notes"]
+  },
+  {
+    "id": "introduction-conclusion-scope-drift",
+    "input": {"introduction": "River forecasts for adult operators.", "conclusion": "Hospital triage for pediatric patients."},
+    "facts/invariants": ["The opening question and conclusion must preserve the task and population."],
+    "expected_actions": ["NARROW conclusion to the introduced task and population"],
+    "forbidden_errors": ["introduce a new task", "change the target population"]
+  },
+  {
+    "id": "results-number-inventory",
+    "input": {"draft": "A long sentence lists every metric value without a comparison or uncertainty."},
+    "facts/invariants": ["The principal comparison and uncertainty carry the result; supporting metrics retain local purpose."],
+    "expected_actions": ["REWRITE around the principal comparison", "retain adverse findings and uncertainty"],
+    "forbidden_errors": ["compress away a material negative finding", "present a number inventory as interpretation"]
+  },
+  {
+    "id": "figure-label-production-marker",
+    "input": {"visible_label": "P7 audit passed"},
+    "facts/invariants": ["A visible label is a located candidate and needs visual and human review."],
+    "expected_actions": ["FLAG label for visual review"],
+    "forbidden_errors": ["auto-delete label", "treat label list as proof of rendered pixels"]
+  },
+  {
+    "id": "good-passage-keep",
+    "input": {"draft": "In Basin North, Model-A improved pooled F1 by 0.03 (95% CI 0.01 to 0.05)."},
+    "facts/invariants": ["The passage correctly preserves condition, model, aggregation, effect, and interval."],
+    "expected_actions": ["KEEP byte-identical when no defect is identified"],
+    "forbidden_errors": ["rewrite for cosmetic variation", "drop aggregation or uncertainty"]
+  }
+]

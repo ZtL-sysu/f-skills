@@ -34,8 +34,6 @@ REQUIRED_TERMS = {
     "metrics": [r"Primary metric", r"Secondary metrics"],
     "failure signal": [r"Failure signal"],
     "hardware budget": [r"Runtime / Hardware Budget|Hardware Budget"],
-    "figures": [r"framework|architecture", r"main result table|main baseline comparison"],
-    "references": [r"36", r"last 3-5 years|last three to five years|3-5"],
     "traceability": [r"Must appear in paper\?"],
 }
 
@@ -77,15 +75,23 @@ def section_body(text: str, heading: str) -> str:
     return text[start:end].strip()
 
 
-def validate(text: str, strict: bool = False) -> list[str]:
+def validate(text: str, strict: bool = False, study_mode: str = "empirical") -> list[str]:
     errors: list[str] = []
 
-    for heading in REQUIRED_SECTIONS:
+    if study_mode not in {"empirical", "theory-only"}:
+        return ["unknown study mode"]
+    theory = study_mode == "theory-only"
+    required = ["Evidence Plan" if x == "Experiment Plan" and theory else x for x in REQUIRED_SECTIONS]
+
+    for heading in required:
         if not has_heading(text, heading):
             errors.append(f"missing required section: {heading}")
         elif strict and len(section_body(text, heading)) < 80:
             errors.append(f"section too thin for strict mode: {heading}")
 
+    # New writing-handoff fields are optional for old contracts.
+    # Citation coverage is reviewed semantically; neither a count nor a recency
+    # phrase proves relevance. Explicit old author requirements remain in the file.
     if not any(has_heading(text, heading) for heading in FIGURE_SECTION_ALIASES):
         errors.append("missing required section: Figure and Table Plan or Figure/Table Decision Rules")
     elif strict:
@@ -93,13 +99,15 @@ def validate(text: str, strict: bool = False) -> list[str]:
         if fig_heading and len(section_body(text, fig_heading)) < 80:
             errors.append(f"section too thin for strict mode: {fig_heading}")
 
-    for label, patterns in REQUIRED_TERMS.items():
+    terms = {"proof assumptions": [r"Assumptions"], "proof obligations": [r"Proof obligations"], "counterexample": [r"Counterexample"], "failure signal": [r"Failure signal"]} if theory else REQUIRED_TERMS
+    for label, patterns in terms.items():
         for pattern in patterns:
             if re.search(pattern, text, flags=re.IGNORECASE) is None:
                 errors.append(f"missing required guidance element for {label}: /{pattern}/")
 
     outline = section_body(text, "Paper Outline")
-    for idx, heading in enumerate(CANONICAL_OUTLINE, start=1):
+    headings = ["Introduction", "Related Work", "Formal Setup", "Theoretical Results", "Discussion", "Conclusion"] if theory else CANONICAL_OUTLINE
+    for idx, heading in enumerate(headings, start=1):
         pattern = rf"^\s*{idx}\.\s*{re.escape(heading)}\s*:"
         if re.search(pattern, outline, flags=re.IGNORECASE | re.MULTILINE) is None:
             errors.append(f"paper outline must include canonical section {idx}: {heading}")
@@ -197,6 +205,7 @@ def main() -> int:
     parser.add_argument("guidance", type=Path, help="Path to guidance Markdown")
     parser.add_argument("--strict", action="store_true", help="Flag thin sections and placeholders")
     parser.add_argument("--packet", type=Path, help="Validate CCFA artifacts and feasibility-contract.json")
+    parser.add_argument("--study-mode", choices=["empirical", "theory-only"], default="empirical")
     args = parser.parse_args()
 
     if not args.guidance.exists():
@@ -204,9 +213,12 @@ def main() -> int:
         return 2
 
     text = args.guidance.read_text(encoding="utf-8")
-    errors = validate(text, strict=args.strict)
+    errors = validate(text, strict=args.strict, study_mode=args.study_mode)
     if args.packet is not None:
-        errors.extend(validate_packet(args.packet))
+        if args.study_mode == "theory-only":
+            errors.append("theory-only uses actual proof-plan evidence, not an empirical feasibility packet")
+        else:
+            errors.extend(validate_packet(args.packet))
     if errors:
         print("Guidance validation failed:")
         for error in errors:

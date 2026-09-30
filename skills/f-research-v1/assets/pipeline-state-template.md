@@ -8,7 +8,7 @@ Update this file after every stage. This file must live under the run root creat
 - Guidance directory:
 - Run root under guidance directory:
 - Artifact manifest:
-- Single final PDF page policy: current journal limits / `>20 pages when no journal limit exists` / user-selected policy
+- Single final PDF page policy: current journal limits / user-selected policy / proportionate length with no numeric default
 - Final template policy: current target-journal template when specified; otherwise contract-selected template
 - Path-containment status: `pending` / `passed` / `blocked`
 
@@ -26,9 +26,9 @@ All process files and deliverables must be under the run root. External paths ma
 | P4 | Full guidance experiment execution | pending |  |  |  |
 | P5 | Strong-result lock and experiment evidence audit | pending |  |  |  |
 | P5A | CCFA pre-draft scientific review and integrity audit | pending |  |  |  |
-| P6 | AutoResearchClaw 16 PAPER_OUTLINE | pending |  |  |  |
-| P7 | AutoResearchClaw 17 PAPER_DRAFT | pending |  |  |  |
-| P8 | Figure/table generation and every-subsection insertion | pending |  |  |  |
+| P6 | Adapted scientific packet and AutoResearchClaw 16 PAPER_OUTLINE | pending |  |  |  |
+| P7 | Clean-packet draft and paragraph reverse outline | pending |  |  |  |
+| P8 | Evidence-selected figure/table generation and insertion | pending |  |  |  |
 | P9 | AutoResearchClaw 18 PEER_REVIEW | pending |  |  |  |
 | P10 | AutoResearchClaw 19 PAPER_REVISION | pending |  |  |  |
 | P11 | AutoResearchClaw 20 QUALITY_GATE | pending |  |  |  |
@@ -36,10 +36,10 @@ All process files and deliverables must be under the run root. External paths ma
 | P13 | AutoResearchClaw 22 EXPORT_PUBLISH into run root | pending |  |  |  |
 | P14 | AutoResearchClaw 23 CITATION_VERIFY | pending |  |  |  |
 | P15 | TeX export verification and PDF compilation in run root | pending |  |  |  |
-| P16 | Single final PDF page count, expansion, and template policy | pending |  |  |  |
+| P16 | Single final PDF and venue/author length policy | pending |  |  |  |
 | P17 | Guidance-file paper audit | pending |  |  |  |
-| P18 | Figure/table and every-subsection visual audit | pending |  |  |  |
-| P19 | Humanizer and final ML-paper polish | pending |  |  |  |
+| P18 | Selected figure/table scientific-use audit | pending |  |  |  |
+| P19 | Academic-profile selective polish via writing adapter | pending |  |  |  |
 | P20 | Final PDF recompile and sanity checks | pending |  |  |  |
 | P21 | Final delivery from guidance-directory run root | pending |  |  |  |
 
@@ -61,4 +61,4 @@ Allowed statuses: `pending`, `running`, `passed`, `blocked`, `superseded`. Put e
 
 | Artifact | Template/style | Page count | Requirement | Status | Notes |
 |---|---|---:|---|---|---|
-| `paper.pdf` | current target template or contract-selected template |  | current journal limits, otherwise >20 pages unless user changes the default | pending |  |
+| `paper.pdf` | current target template or contract-selected template |  | current journal limits or user preference; no numeric default otherwise | pending |  |

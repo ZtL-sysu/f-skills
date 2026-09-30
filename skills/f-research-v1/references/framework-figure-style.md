@@ -27,6 +27,10 @@ Use restrained pastel families:
 
 Keep the palette soft and publication-like. Avoid neon colors, glossy buttons, shadows that look like UI cards, or infographic clutter.
 
+## Visible Text Allowlist
+
+Visible labels may name verified inputs/outputs, actual method modules, variables, tensor dimensions, training/inference relationships, and scientific evaluation conditions. Do not show skill names, generation instructions, prompt titles, P/S stage labels, review/audit status, PASS labels, production requirements, or file paths. Tool-use disclosures follow author/journal requirements separately and are not copied from production notes into the figure or caption. If the study itself investigates a workflow system, show its actual scientific components.
+
 ## Technical Labeling
 
 Include:
@@ -41,6 +45,8 @@ Do not include unsupported equations or metrics. The figure must reflect the fin
 ## GPT Image Prompt Pattern
 
 Use `assets/framework-figure-prompt-template.md` and fill it from the completed paper. The prompt should explicitly ask for an editable-looking scientific architecture diagram, not a poster or marketing illustration.
+
+Keep the generated label list separate from prompt instructions. Check the list against this allowlist and visually inspect the rendered image; if visual inspection is unavailable, record that verification as pending rather than passed.
 
 After generation, inspect the image:
 

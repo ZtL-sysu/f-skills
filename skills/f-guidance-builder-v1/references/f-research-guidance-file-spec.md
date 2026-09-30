@@ -12,8 +12,8 @@ The file must contain:
 4. `Paper Outline`: section-level outline with planned contribution per section, using exactly these numbered main sections: `1 Introduction`, `2 Related Work`, `3 Method`, `4 Experiments and Results`, `5 Discussion`, `6 Conclusion`.
 5. `Experiment Plan`: datasets, baselines, proposed method variants, ablations, metrics, expected outcomes, statistical checks, hardware/runtime budget, and stopping criteria.
 6. `Expected Results`: quantitative or qualitative targets from the user or builder. Include minimum acceptable result, strong result, and failure signal.
-7. `Figure/Table Plan`: expected data plots, framework figure, ablation tables, and where they support the argument.
-8. `Citation Scope`: keywords, must-cite papers, venue/domain boundaries, and citation recency expectations.
+7. `Figure and Table Plan` or `Figure/Table Decision Rules`: retain the heading; the content records evidence-driven visual decisions, including deferring selection until results; no fixed count or per-subsection artifact requirement.
+8. `Citation Scope`: keywords, must-cite papers, venue/domain boundaries, and citation recency expectations suited to the field and claim.
 
 ## Blocking Gaps
 
@@ -39,7 +39,7 @@ The generated guidance outline must use exactly these top-level numbered section
 
 Do not replace this with ad hoc top-level sections such as `Experimental Setup`, `Results`, `Ablations`, `Analysis`, `Limitations`, or `Future Work`. If those details are needed, keep them as subsections inside the six required sections.
 
-If only minor details are missing, make a conservative assumption, record it in the run log, and proceed.
+If only minor details are missing, make a conservative assumption, record it in the run log, and proceed. The writing handoff fields (central question/reader, problem-to-design link, contribution type, planned-claim vs observed-finding status, and author writing protections/preferences with source) are optional for legacy guidance. If absent, f-research-v1 may derive them at P6 from authorized evidence; never infer observations from planned claims or mark an unrun stage complete.
 
 ## Contract Extraction
 
@@ -58,13 +58,23 @@ expected_minimum:
 expected_strong:
 must_run_experiments:
 must_have_ablations:
-figure_plan:
+figure_table_decision_rules:
 experiment_traceability:
 citation_requirements:
+central_question:
+intended_reader:
+domain_design_bridge:
+planned_claim:
+observed_finding: unresolved_until_evidence
+writing_preferences_and_source:
+protected_scope_and_source:
+venue_length_requirements_and_source:
 open_assumptions:
 ```
 
 Save the contract in the project artifacts so later writing, figures, and citation checks can audit against it.
+
+At writing handoff, transfer the question, section purposes and material conditions; research P6 resolves them against supported facts into the writing adapter's paragraph plan and qualification placement. Guidance expectations do not become drafting evidence, and search-access limitations do not become claims that prior work is scientifically inadequate.
 
 ## Traceability Requirements
 

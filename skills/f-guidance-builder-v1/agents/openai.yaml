@@ -1,4 +1,4 @@
 interface:
   display_name: "F Guidance Builder V1"
   short_description: "Build rigorous research guidance files"
-  default_prompt: "Generate a rigorous f-research-v1 guidance file from my proposed technique, hardware, and optional application domain."
+  default_prompt: "Generate an evidence-grounded f-research-v1 guidance file from my proposed technique, hardware, and optional application domain, keeping planned claims distinct from observed findings and preserving optional author writing preferences."

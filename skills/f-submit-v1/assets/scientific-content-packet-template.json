@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "brief": {
+    "question": "<specific scientific question>",
+    "answer": "<bounded finding; do not copy planned_claim as observed_finding>",
+    "audience": "<reader and reason the question matters>",
+    "domain_bridge": "<problem -> requirement -> actual design -> supported result -> meaning; or theory: not applicable with reason>",
+    "priorities": {"main": [], "supporting": [], "diagnostic": []},
+    "terminology": {},
+    "paragraph_plan": [],
+    "qualification_placement": [],
+    "section_jobs": {"Introduction": "<question and design promise>", "Methods": "<operational test>", "Results": "<comparison answering question>", "Discussion": "<interpretation and evidence boundary>", "Conclusion": "<answer with no new claim>"},
+    "author_constraints": {"edit_scope": ["structural", "prose-only"], "protected_sections": [], "protected_artifacts": [], "declaration_mode": "preserve", "allow_new_experiments": false, "editing_round_budget": 3},
+    "journal_requirements": {"source": "unknown", "length": "content-led until current limits verified", "explicit_author_requirements": []}
+  },
+  "facts": [],
+  "internal": {"note": "External only. Facts require id, kind, statement, status, evidence:[{path,sha256}]. Results additionally require model, condition, metric, value, unit, aggregation, uncertainty, measurement_scope. This template is intentionally not an accepted evidence packet."}
+}

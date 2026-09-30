@@ -49,7 +49,7 @@ Reject or redirect scenarios with duplicate overlap.
 
 ## Citation Seed Rules
 
-For the final guidance file, provide citation scope rather than a fully verified bibliography. Include likely keywords, must-cite clusters, and 36 or more candidate references when source verification is available. `f-research-v1` will later perform full citation verification.
+For the final guidance file, provide citation scope rather than a fully verified bibliography. Include likely keywords, must-cite clusters, relevant foundational work, and recent work appropriate to the field and target venue. Do not impose a universal candidate-reference count. `f-research-v1` will later perform full citation verification.
 
 Most references should be from the last 3-5 years unless foundational work is necessary. Keep older references for original methods, datasets, or metrics.
 

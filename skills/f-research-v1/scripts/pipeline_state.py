@@ -51,12 +51,23 @@ def validate(state, root, complete=False, before=None):
             elif item.get("sha256") != digest(path):
                 errors.append(label + ": stale hash " + raw)
     files_ok(state.get("contract"), "contract")
+    profile = state.get("execution_profile", "empirical")
+    if profile not in {"empirical", "theory-only"}:
+        errors.append("unknown execution profile")
+    if profile == "theory-only":
+        files_ok(state.get("profile"), "theory profile")
+        files_ok(state.get("authorization"), "theory authorization")
     gap = False
     for row in rows:
         status = row.get("status")
         if status not in spec["statuses"]:
             errors.append(row["id"] + ": invalid status")
         if status == "passed":
+            if profile == "theory-only":
+                if row.get("gate_basis") != "theory-only":
+                    errors.append(row["id"] + ": theory gate basis required")
+                if not isinstance(row.get("actual_executor"), str) or not row["actual_executor"].strip():
+                    errors.append(row["id"] + ": actual executor required")
             if gap:
                 errors.append(row["id"] + ": predecessor has not passed")
             if row.get("contract_version") != version:

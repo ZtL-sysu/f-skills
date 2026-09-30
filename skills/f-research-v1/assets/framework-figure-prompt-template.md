@@ -32,6 +32,11 @@ Composition:
 - Column 4 header: [FILL]
 - Optional column 5 header: [FILL]
 
+Visible text allowlist:
+- Show only verified inputs/outputs, actual method modules, variables, tensor dimensions, training/inference relations, and scientific evaluation conditions.
+- Never show skill names, prompt titles, stage labels, review/audit or PASS status, tool-generation instructions, production requirements, or file paths.
+- Route genuine tool-use disclosure through author/journal policy; do not copy prompt or production notes into the image or caption.
+
 Important:
 - The diagram must match the actual paper and not invent modules.
 - Use short labels, not paragraph text.

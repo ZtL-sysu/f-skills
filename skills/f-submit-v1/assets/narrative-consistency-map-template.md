@@ -6,9 +6,19 @@ Primary selling point:
 
 `problem/gap -> insight -> method/design embodiment -> evidence -> interpretation -> bounded conclusion`
 
+Central scientific question:
+
+Core claim (evidence-bounded):
+
+Claim hierarchy: `core / supporting / diagnostic / negative`
+
+Domain bridge (or `not applicable` with reason): `field problem -> design requirement -> actual design choice -> result at field/task level -> supported use or implication`
+
+Author scope: `edit_scope` | `protected_sections` | `protected_artifacts` | `declaration_mode` | `allow_new_experiments` (authorization source)
+
 ## Selling-Point Trace
 
-| Claim ID | Title/abstract framing | Introduction gap/contribution | Method/design embodiment | Result/table/figure support | Discussion interpretation | Conclusion callback | Scope/strength consistent | Status |
+| Claim ID / role | Title/abstract framing | Introduction gap/contribution | Method/design embodiment | Result/table/figure support | Discussion interpretation | Conclusion callback / local use | Scope/strength consistent | Status |
 |---|---|---|---|---|---|---|---|---|
 | C1 |  |  |  |  |  |  |  |  |
 
@@ -24,3 +34,6 @@ Primary selling point:
 - Backward trace result:
 - Figure/table narrative alignment:
 - Final closure decision:
+- Reverse outline: paragraph index -> one sentence stating the information or argumentative move added:
+- Core repetition to remove or merge:
+- Supporting/diagnostic finding local purpose (no forced cross-chapter callback):

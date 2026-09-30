@@ -75,15 +75,19 @@ When and only when `experiment-traceability.md` and `experiment-completion-lock.
 
 | f-research-v1 stage | AutoResearchClaw stage | Required evidence |
 |---|---|---|
-| P6 | Stage 16 `PAPER_OUTLINE` | Six-section outline and claim/evidence map. |
-| P7 | Stage 17 `PAPER_DRAFT` | Full draft in which every subsection under `4 Experiments and Results` is mapped to at least one relevant figure/table. |
-| P9 | Stage 18 `PEER_REVIEW` | Reviewer reports that explicitly check experiment completeness, strong-result satisfaction, and figure/table coverage for every `Experiments and Results` subsection. |
-| P10 | Stage 19 `PAPER_REVISION` | Revision log resolving all reviewer issues. |
+| P6 | Stage 16 `PAPER_OUTLINE` | Outline and claim/evidence map built from the manuscript brief, clean fact packet, and section-purpose map. |
+| P7 | Stage 17 `PAPER_DRAFT` | Evidence-grounded draft with reverse outline and distinct paragraph functions. |
+| P9 | Stage 18 `PEER_REVIEW` | Reviewer reports and concern-to-edit-action ledger. |
+| P10 | Stage 19 `PAPER_REVISION` | Targeted revision using relevant evidence, passages, and edit actions. |
 | P11 | Stage 20 `QUALITY_GATE` | Quality report with no unresolved major issues. |
 | P13 | Stage 22 `EXPORT_PUBLISH` | TeX/bibliography/figure export artifacts. |
 | P14 | Stage 23 `CITATION_VERIFY` | Citation authenticity, relevance, placement, and duplicate-paper audit status. |
 
-Pass the guidance file, `experiment-traceability.md`, `experiment-completion-lock.md`, result tables, raw metric paths, run logs, figure source data, and analysis notes into the writing stage from their run-root copies. Configure AutoResearchClaw/autoresearchclaw output paths to `run_root/writing/` or `run_root/deliverables/` when supported. If the tool cannot be configured and writes elsewhere, immediately copy the accepted stage output into `run_root`, record the external source in `artifact-manifest.json`, and continue from the run-root copy. Do not let AutoResearchClaw redo or replace the completed experiment plan unless the evidence audit shows a missing or flawed required experiment; in that case, return to the experiment loop instead of drafting.
+The drafting stage consumes a manuscript-facing scientific content packet and manuscript brief, not an undifferentiated collection of execution records. Before outlining, build the packet from accepted evidence. Include the research question; verified task and method definitions; study design; results with units, uncertainty, aggregation, and measurement boundaries; relevant verified references and the claims they support; material scope conditions; and approved figure/table content. Give each key fact an evidence state such as `observed_verified`, `author_reported`, `planned`, or `unresolved`. Keep stage ledgers, experiment-lock verdicts, debugging chronology, reviewer dialogue, command transcripts, packaging instructions, and manuscript-production notes outside drafting context. Retain evidence links for targeted verification. Translate scientifically relevant disclosures (for example test exposure, exclusions, post-hoc analyses, or protocol changes) into accurate neutral facts; do not discard unfavorable evidence or import administrative narration.
+
+Build a concise manuscript brief with the central question and evidence-scaled finding, intended reader relevance, domain-to-design connection, question/design/result/interpretation/conclusion map, priority of main versus auxiliary findings, fixed terminology, section purposes, author protections, style, and venue constraints. Keep operational logs and decision records external; do not create duplicate long reports. Use the repository writing adapter to construct each actual writing call from the shared scientific-writing contract, packet, brief, and task-specific section/revision request. Adapter fields are repository-owned inputs, not asserted AutoResearchClaw CLI/API parameters; verify the installed executor interface before invocation. Do not claim an external runtime consumed these inputs until confirmed.
+
+Configure AutoResearchClaw/autoresearchclaw output paths to `run_root/writing/` or `run_root/deliverables/` when supported. If the tool cannot be configured and writes elsewhere, immediately copy the accepted stage output into `run_root`, record the external source in `artifact-manifest.json`, and continue from the run-root copy. Do not let AutoResearchClaw redo or replace the completed experiment plan unless the evidence audit shows a missing or flawed required experiment; in that case, return to the experiment loop instead of drafting.
 
 ## Experiment Loop
 

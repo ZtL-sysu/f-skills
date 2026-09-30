@@ -53,10 +53,10 @@ Remove or externalize:
 - JSON/CSV export and plotting mechanics;
 - Crossref/BibTeX/reference-search workflow;
 - file paths, packaging, delivery, or internal audit instructions;
-- bug-fix chronology unless the bug itself is the subject of a scientific validation study;
+- clerical bug-fix chronology; retain material method/protocol changes and validity disclosures as neutral scientific facts;
 - language asking readers to trust code, metrics, bibliography, or prose;
 - journal/editor/reviewer-facing self-commentary;
-- conversational verdicts and rhetorical questions;
+- conversational verdicts and empty rhetorical self-questioning; a genuine scientific question is valid;
 - repeated defensive disclaimers that do not add a new applicability boundary.
 
 Replace them with direct scientific statements: what was measured, under which protocol, what evidence supports the claim, and where applicability ends.
@@ -67,7 +67,7 @@ Maintain a limitation-placement ledger. Classify each caveat as `material limita
 
 Diagnose before editing. Flag concrete patterns such as templated transitions, rhetorical self-questioning, rule-of-three padding, slogan-like `not X but Y` contrasts, repeated `we therefore`, journal-facing meta-language, and conversational comparisons.
 
-Scan title, abstract, introduction/background, methods, results, discussion, limitations, conclusion, captions, and declarations separately. Record `no concrete AI-like defect` or list exact locations and defect types. Apply `humanizer` only to flagged passages. Do not paraphrase the full paper merely to change wording. Preserve technical terms, equations, numbers, units, citations, figure/table references, and the strength of supported claims. Re-scan each edited passage for lost qualifiers, stronger/weaker claims, broken references, and casual-register drift. The output must remain formal academic English.
+Scan title, abstract, introduction/background, methods, results, discussion, limitations, conclusion, captions, and declarations separately. Record `no concrete AI-like defect` or list exact locations and defect types. Use the documented CLI in `references/writing-adapter.md` to build an explicit-context request with the shared academic profile. The builder does not invoke a model or edit text. For flagged humanizer work, select `--subskill humanizer` and name the local defect, then verify the returned manuscript text separately. Installed subskill guidance is subordinate to the shared contract, verified evidence, author protections, and current journal requirements. Do not paraphrase the full paper merely to change wording. Preserve technical terms, equations, numbers, units, citations, figure/table references, and the strength of supported claims. Re-scan each edited passage for lost qualifiers, stronger/weaker claims, protected-range changes, broken references, and casual-register drift. If the adapter or contract is unavailable, record the integration as blocked/unverified. The output must remain formal academic English.
 
 ## Gate E: Declaration Routing
 
@@ -118,6 +118,8 @@ After every accepted prose, author, metadata, or declaration change:
 7. verify semantic equivalence: normalized main-source files match the accepted source; normalized extracted PDF text matches; page count and ordered figure/table/reference inventories match; any intentional compiler-only metadata difference is documented;
 8. search the final PDF, editable source, source ZIP contents, cover letter, title page, standalone files, metadata, upload map, and portal draft for removed process/meta phrases and stale author/declaration text; record per-artifact results in the declaration-change record;
 9. re-run the narrative map, limitation-placement ledger, and humanizer post-edit checks after any late packaging or metadata revision that changes manuscript text.
+
+Bind each semantic and package check to the hash of the exact current submission-facing source/artifact plus applicable rubric, profile, and renderer versions. Any later manuscript text, caption, visible figure label, declaration, metadata, or source change invalidates affected checks and dependent final checks; recompute hashes and rerun them against the final files before S9 passes. Verify `protected_sections`, `protected_artifacts`, `declaration_mode`, and `allow_new_experiments` against the run contract. Report factual concerns in protected text externally without silently editing it; author-managed declarations remain pending until resolved, and required disclosures must not be removed by keyword scans.
 
 Stale, contradictory, non-compiling, or semantically different copies fail the gate.
 

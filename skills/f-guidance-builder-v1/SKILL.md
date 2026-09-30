@@ -5,6 +5,10 @@ description: Use when the user has a method or technique idea, optional applicat
 
 # F Guidance Builder V1
 
+## Theory-only requests
+
+When the user explicitly requests a theoretical article without experiments, first load [references/theory-only-mode.md](references/theory-only-mode.md). Its authorized, separately recorded profile maps the existing stage IDs to proof-based gates and permits the actual native writing executor; empirical defaults below do not manufacture experiment obligations for this mode. Preserve empirical contracts unchanged.
+
 ## Execution contract
 
 Read [references/execution-contract.md](references/execution-contract.md) at startup, resume, and correction. Initialize `pipeline-state.json` from `assets/pipeline-definition.json` using `scripts/pipeline_state.py --init` with the state path as its positional argument. Maintain the Markdown ledger as its readable view. Validate `--before <stage-id>` before starting a stage and `--complete` before delivery. The JSON definition is the canonical stage list; the workflow below defines the substantive gates. Record current user preferences and authorized scope once in a versioned run-local contract. This skill does not change the selected model or global settings.
@@ -169,6 +173,8 @@ If either audit is weak, revise the scenario or method before generating `guidan
 
 ## Guidance File Output
 
+Keep the existing first-level headings and six-section outline. Add only lightweight optional writing handoff fields: the central scientific question and intended reader; how the domain/theory problem motivates a design choice; expected contribution type; author writing preferences/protected scope/venue requirements with their source; and a statement that `planned_claim` is distinct from `observed_finding`, which is updated from evidence at P5A/P6. Missing fields in an existing guidance file are not blocking: f-research-v1 may fill them from authorized facts at P6, preserving unknown/unresolved states. Do not turn predicted findings into results, or rebuild research-planning content here.
+
 Produce a `guidance.md` inside `auto-paper/<generation-time>/<paper-title>/` that follows `f-research-v1/references/guidance-file-spec.md` when available, otherwise use `references/f-research-guidance-file-spec.md`. Use the template in `assets/guidance-output-template.md`. Do not modify either spec unless the user explicitly asks.
 
 The guidance file must be strong enough for a Q2-or-better journal submission plan:
@@ -179,8 +185,8 @@ The guidance file must be strong enough for a Q2-or-better journal submission pl
 - Detailed experiments: datasets, baselines, variants, ablations, metrics, statistical checks, runtime budget, stopping criteria.
 - Expected results with minimum acceptable result, strong result, and failure signal.
 - A reference to the CCFA startup packet and a claim-level strong-result feasibility contract; every binding strong target must be traceable to a baseline-calibrated evidence plan, not a desired outcome.
-- Figure/table decision rules that describe what evidence should be visualized, without prematurely fixing the final figure set before experiments exist. The final paper's figures/tables are selected by `f-research-v1` after evidence stabilizes.
-- Citation scope with at least 36 likely references, mostly from the last 3-5 years, pending later verification by `f-research-v1`.
+- Optional figure/table decision rules that describe what evidence may benefit from visualization, without imposing a count or assigning an artifact to every subsection. The final set is chosen by `f-research-v1` after evidence stabilizes.
+- Citation scope with relevant topic clusters, must-cite works, and venue/field recency considerations; the appropriate bibliography size depends on scope and venue.
 
 Also output:
 

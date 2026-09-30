@@ -1,6 +1,6 @@
 # Module Quality Rubric
 
-Use this rubric in S6/S8. Score the user's manuscript and each of the 10 comparator papers module by module. Follow `submission-recovery.md`: freeze comparator sources, rubric and score evidence before revision, retain confidence, and treat the fourth-highest threshold as an operational comparison rather than a calibrated acceptance probability. Re-score affected manuscript modules against the frozen comparator scores; do not move the threshold to obtain a pass.
+Use this rubric in S6/S8. Score the user's manuscript and each of the 10 comparator papers module by module. Follow `submission-recovery.md`: freeze comparator sources, rubric and score evidence before revision, retain confidence, and treat the fourth-highest threshold as an operational comparison rather than a calibrated acceptance probability. Re-score affected manuscript modules against the frozen comparator scores; do not move the threshold to obtain a pass. A high comparator score is a presentation reference, never evidence that a manuscript lacks a mechanism, dataset, experiment, or contribution the comparator happens to have.
 
 ## Contents
 
@@ -40,7 +40,7 @@ Use a 100-point module score. Adjust criteria by module, but preserve these dime
 | Field-standard structure and logical flow | 10 |
 | Specificity and technical precision | 15 |
 | Evidence, result, or citation support | 20 |
-| Comparative positioning against prior work | 10 |
+| Accurate positioning against prior work, including relevant capabilities, assumptions, trade-offs, and evaluation settings | 10 |
 | Concision and information density | 10 |
 | Journal-level tone and polish | 10 |
 | Selling-point consistency and narrative closure | 10 |
@@ -91,7 +91,7 @@ Must create a clear problem-to-gap-to-contribution chain, position against curre
 
 ### Related Work / Background
 
-Must group literature by theme, show what prior work cannot solve, and lead directly to the manuscript's contribution.
+Group literature by capabilities, assumptions, trade-offs, methods, or evaluation settings relevant to this study, then locate the specific question addressed here. Do not say prior work cannot solve a problem or fails at it unless cited evidence supports that claim. Do not require a superiority claim over every literature group.
 
 ### Method
 
@@ -103,7 +103,7 @@ Must connect datasets, baselines, metrics, main results, ablations, uncertainty/
 
 ### Discussion
 
-Must interpret why results occur, compare with literature, discuss scope and limitations, and avoid simply repeating the results.
+Interpret what the results establish, compare with relevant literature, and discuss scope and limitations. Separate observed patterns, analytically implied properties, and untested mechanisms. A complete causal explanation is not required unless the study tests causation; identify plausible explanations as such. Avoid simply repeating results.
 
 ### Conclusion
 
@@ -111,7 +111,7 @@ Must summarize contribution and evidence with honest scope. It should not introd
 
 ## Selling-Point And Closure Checks
 
-Build `narrative-consistency-map.md` with `assets/narrative-consistency-map-template.md`. For every primary selling point, verify:
+Build `narrative-consistency-map.md` with `assets/narrative-consistency-map-template.md`. Define the central question and classify claims as core, supporting, diagnostic, or negative. For every core selling point, verify:
 
 1. the title and abstract frame the same contribution at compatible strength;
 2. the Introduction states the gap and contribution without adding a second competing thesis;
@@ -121,7 +121,7 @@ Build `narrative-consistency-map.md` with `assets/narrative-consistency-map-temp
 6. the Conclusion recalls the same claim and evidence boundary without new results;
 7. figures and tables support, rather than compete with, the narrative spine.
 
-Flag contribution bullets with no result, result subsections unused in Discussion/Conclusion, conclusions absent from the Introduction, and shifts in task/method/population/causal strength. A single central selling point may have supporting subclaims, but they must remain subordinate and traceable.
+Flag contribution bullets with no result, conclusion claims absent from earlier framing/evidence, and shifts in task/method/population/causal strength. Supporting and diagnostic results need an appropriate local interpretation, but do not fail merely because they are not repeated in the Introduction or Conclusion. A single central selling point may have supporting subclaims; record their role and evidence without manufacturing extra callbacks.
 
 ## Professionalism Override
 
@@ -132,8 +132,8 @@ A module cannot pass on score alone while it contains any of the following:
 - language addressed to the journal, editor, reviewer, or the paper-building process;
 - conversational comparisons, rhetorical self-questioning, slogan-like contrast, or repeated templated transitions;
 - repeated defensive negation where one precise evidence boundary would suffice;
-- a substantive caveat placed outside Discussion/Limitations without a logged claim-preserving necessity;
-- an orphan selling point, unsupported narrative callback, or conclusion-only claim;
+- a material caveat omitted from the affected claim and Discussion/Limitations, or an immediate qualification removed such that the claim becomes false;
+- an unsupported core claim, contradictory callback, or conclusion-only claim;
 - unsupported claims about trust, reproducibility, novelty, superiority, efficiency, or deployment.
 
 Inspect every module and record either `no concrete defect` or the exact flagged passage and defect class. Name the defect, revise only the affected passage, and re-score. After humanization, verify scientific facts, numbers, equations, citations, claim strength, and formal academic register.

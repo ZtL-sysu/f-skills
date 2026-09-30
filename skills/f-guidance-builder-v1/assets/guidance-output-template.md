@@ -22,10 +22,16 @@ Describe the proposed method, hypothesis, adaptation, or contribution in concret
 
 ## Paper Story
 
+- Central scientific question:
+- Intended reader and why the question matters:
+- Domain/theory problem → design requirement → candidate method choice:
+- Expected contribution type (method / empirical comparison / resource trade-off / theory / other):
 - Opening problem:
 - Why existing work is insufficient:
 - Core insight:
 - What evidence should convince the reader:
+- Planned claim (not an observed finding):
+- Finding to assess after experiments (leave unresolved until evidence exists):
 - Main claim:
 - Boundary of the claim:
 - Skeptical-reviewer hook:
@@ -112,10 +118,11 @@ Do not lock final figure/table contents before experiments are completed. Define
 - Required first figure type: GPT-generated framework/architecture figure after the method is finalized.
 - Required experiment visualizations if supported by data:
 - Required result tables if supported by data:
-- Minimum total figures + tables expected in final paper:
-- Maximum total figures + tables expected in final paper:
+- Author or venue figure/table requirements, with source (if any):
+- Evidence that may benefit from a visual:
 - Rules for excluding weak or misleading plots:
-- Which claims must have a nearby figure/table:
+- Scientific claims for which a figure/table would aid inspection (optional):
+- Final count and placement are chosen after evidence stabilizes; no per-subsection quota applies.
 
 ## Traceability Checklist
 
@@ -132,8 +139,8 @@ Do not lock final figure/table contents before experiments are completed. Define
 - Search keywords:
 - Target recency:
 - Excluded areas:
-- Minimum reference count: 36
-- Recency expectation: majority from the last 3-5 years
+- Reference scope/coverage appropriate to the question and venue:
+- Recency expectation and its source; retain relevant foundational work
 
 ## Novelty And Feasibility Summary
 
@@ -165,6 +172,9 @@ Do not lock final figure/table contents before experiments are completed. Define
 
 ## Constraints and Preferences
 
+- Writing preference/source:
+- Protected sections or edit scope/source:
+- Journal page/word/figure requirements and source:
 - Things the workflow must do:
 - Things the workflow must avoid:
 - Preferred writing language:

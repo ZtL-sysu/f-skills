@@ -33,7 +33,7 @@ If a required experiment is infeasible or the strong target cannot be reached, e
 
 ## Gate 1: Evidence-to-Claim
 
-Before drafting, create a claim table and check it against the original guidance file:
+Before drafting, build the packet and brief with `writing-adapter.md` and load `scientific-writing-contract.md`; reuse the claim table and check it against the original guidance file:
 
 | Claim | Evidence | Figure/Table | Citation support | Risk |
 |---|---|---|---|---|
@@ -53,10 +53,10 @@ Use AutoResearchClaw's writing stages as the main draft-and-review engine, but e
 
 | f-research-v1 stage | AutoResearchClaw stage | Required output |
 |---|---|---|
-| P6 | 16 `PAPER_OUTLINE` | Canonical six-section outline with evidence map. |
-| P7 | 17 `PAPER_DRAFT` | Full section-by-section draft with a relevant figure/table mapped to every subsection under `4 Experiments and Results`. |
-| P9 | 18 `PEER_REVIEW` | At least two rigorous reviewer reports, including the every-subsection visual-coverage check. |
-| P10 | 19 `PAPER_REVISION` | Revision plus response/resolution log. |
+| P6 | 16 `PAPER_OUTLINE` | Six-section outline, claim/evidence map, section purposes, and fixed terminology from the adapted brief. |
+| P7 | 17 `PAPER_DRAFT` | Full draft using the clean scientific packet and section task, with a paragraph reverse outline. |
+| P9 | 18 `PEER_REVIEW` | At least two reviewer reports plus CCFA review/audit and concern-to-edit-action ledger. |
+| P10 | 19 `PAPER_REVISION` | Targeted revisions using only relevant fact packet entries, passages, and edit actions. |
 | P11 | 20 `QUALITY_GATE` | Quality-gate pass/fail report. |
 | P13 | 22 `EXPORT_PUBLISH` | TeX source, bibliography, figures, and export artifacts. |
 | P14 | 23 `CITATION_VERIFY` | Citation authenticity, relevance, placement, and duplicate-paper report. |
@@ -79,8 +79,8 @@ The draft must include the required content in the canonical structure:
 - `Introduction`: clear problem, gap, contribution, and evidence preview.
 - `Related Work`: prior work grouped by theme, ending with the exact gap this paper fills.
 - `Method`: problem setup, notation, architecture, algorithm, objective, and implementation details.
-- `Experiments and Results`: datasets, baselines, settings, metrics, main results, ablations, robustness/efficiency analysis, and all experiment-generated tables/figures.
-- `Discussion`: interpretation, why the method works, failure cases, limitations, threats to validity, and practical implications.
+- `Experiments and Results`: datasets, baselines, settings, metrics, main results, ablations, robustness/efficiency analysis, and evidence-selected tables/figures; preserve all material negative findings, not debugging chronology.
+- `Discussion`: interpret what evidence establishes; distinguish observed patterns, analytically implied properties and untested mechanisms. Include relevant failure cases, limitations and implications without requiring an unmeasured causal explanation.
 - `Conclusion`: concise summary of contribution, evidence, and honest scope.
 
 No scientific content may appear after `Conclusion` unless explicitly required by the target journal. Do not add post-conclusion sections such as `Reproducibility and Artifact Statement`, `Artifact Checklist`, `Claim-Boundary Audit`, `Submission Checklist`, or `Author Checklist` inside the paper. Put those in separate project files.
@@ -101,14 +101,7 @@ For Figure 1, the overall framework/architecture figure:
 6. Insert the figure into the paper and write a caption that explains the mechanism, not just the visual components.
 7. Do not use `nature-figure` or any Nature skill to create this overall figure; Nature skills are for data visualizations and result artifacts.
 
-For every subsection under `4 Experiments and Results`:
-
-- Each subsection must contain or cite at least one nearby figure or table, regardless of whether it covers setup, datasets, metrics, main comparisons, ablations, robustness, efficiency, qualitative outcomes, or error analysis.
-- Do not create a new subsection until a relevant supporting artifact has been assigned to it.
-- If no meaningful figure/table exists, keep the material in the parent-section introduction or merge it into a related subsection that already has an appropriate artifact.
-- Do not satisfy this gate with decorative or irrelevant visuals; the artifact must support the subsection's scientific purpose.
-- The first substantive paragraph of the subsection should cite its corresponding figure/table.
-
+Choose subsections and figures/tables according to the evidence and reader's needs. A subsection may be text-only when that is the clearest way to describe its purpose; figures and tables are used where they materially support the scientific argument. Cite an artifact where its evidence is first discussed, without a first-paragraph citation quota. Do not create decorative visuals to satisfy a count or subsection quota.
 Every figure/table must satisfy:
 
 - cited in the text;
@@ -118,30 +111,20 @@ Every figure/table must satisfy:
 - no unsupported numbers;
 - placement is close to the explanatory paragraph.
 
-Default mature-paper figure/table count:
-
-- total figures + tables: 6-10;
-- Figure 1: GPT-generated architecture/framework image;
-- at least one main result table;
-- at least one ablation table or ablation figure;
-- at least one robustness/error-analysis visualization if the guidance requires robustness;
-- at least one efficiency/resource table or plot if the paper makes efficiency claims.
-
-If fewer than 6 total artifacts are used, explain why in `figure-table-insertion-audit.md`. If more than 10 are used, justify that the paper still reads like a mature journal manuscript rather than a report dump.
-
+Select the number and kind of visuals from the evidence and venue requirements, preserving the prescribed GPT-generated Figure 1. Select result, ablation, robustness and efficiency visuals for the comparisons and claims they support. No default count applies; the audit records purpose and evidence mapping for included artifacts.
 Maintain `figure-table-insertion-audit.md`:
 
 | Artifact | Source experiment/generation step | Manuscript label | First citation location | Caption quality | Discussed near citation? | Results subsection covered | Status |
 |---|---|---|---|---|---|---|---|
 
-Allowed statuses: `inserted`, `needs-caption`, `needs-text-citation`, `too-far-from-discussion`, `needs-result-subsection-artifact`, `unused-with-reason`.
+Allowed statuses: `inserted`, `needs-caption`, `needs-text-citation`, `too-far-from-discussion`, `unused-with-reason`.
 
 Also maintain a compact result-subsection coverage table in the same file:
 
 | Experiments and Results subsection | Scientific purpose | Required artifact | Artifact label | Nearby citation? | Status |
 |---|---|---|---|---|---|
 
-Allowed statuses: `covered`, `needs-artifact`, `merge-or-remove-subsection`.
+Allowed statuses: `covered-by-visual`, `covered-by-text`, `needs-evidence`. Text-only settings are valid; do not merge scientifically useful sections merely to meet a visual quota.
 
 ## Gate 4: Citations
 
@@ -149,8 +132,8 @@ Use `ml-paper-writing`, `nature-citation`, and `citation-audit`.
 
 Requirements:
 
-- at least 36 references;
-- most references from the last 3-5 years relative to the current date;
+- a research-question-appropriate body of verified, relevant references;
+- recency appropriate to the field and claim, with foundational sources retained where needed;
 - all references real and relevant;
 - BibTeX fetched from reliable sources when possible;
 - no memory-invented BibTeX;
@@ -187,18 +170,10 @@ The length policy is single-final-PDF:
 
 1. Produce exactly one final compiled manuscript PDF, normally `paper.pdf`.
 2. If the current target journal or template defines a word, page, figure, or file-size limit, comply with it and record the source in `submission-constraints.md`.
-3. If no target length limit is known, the default mature-draft target is more than 20 pages unless the user explicitly waives it.
-4. Do not create conflicting parallel manuscripts merely to satisfy both the default draft target and a real venue limit. The current target-journal version governs.
+3. If no target length limit exists, follow any explicit author preference; otherwise judge length by whether the paper answers its question with adequate evidence and context. Do not use a page-count threshold as a reason to expand.
+4. Do not create conflicting parallel manuscripts merely to satisfy different preferences. The current target-journal version governs.
 
-After compiling, count pages and, when applicable, words and file size. If no target limit exists and the PDF is 20 pages or fewer without a waiver:
-
-1. Identify short sections and thin paragraphs.
-2. Use `paper-refine`, `paper-polish-workflow`, or the relevant paper skill to expand paragraph by paragraph.
-3. Expand with substance inside the six required sections: mechanisms, experimental detail, failure cases, limitations, related-work distinctions, and ablation interpretation.
-4. Do not pad with repetition.
-5. Do not add appendices, artifact checklists, workflow descriptions, or post-conclusion notes to satisfy the page policy.
-6. Recompile and repeat until `paper.pdf` is more than 20 pages.
-
+Count pages/words/file size when required by the venue or requested by the author. Revise for missing scientific substance or excess repetition, not to reach an arbitrary length. Do not pad with process narration or appendices.
 Record the final PDF path, template/style, page/word/file-size constraints, actual values, waiver status, and pass/fail decision in `page-count-audit.md`. Do not produce or audit a second manuscript variant unless the user explicitly requests it.
 
 ## Gate 5.5: Submission Constraints, Metadata, and Declaration Routing
@@ -246,8 +221,8 @@ Before humanization, run the final guidance and artifact audit:
 1. Re-read the original guidance file.
 2. Check `experiment-completion-lock.md`; do not proceed if any strong-result lock item is unresolved.
 3. Check `paper-guidance-audit.md`; fix every `missing` or unjustified `partially-covered-needs-repair` item.
-4. Check `experiment-traceability.md`; verify every required run is represented in the paper.
-5. Check `figure-table-insertion-audit.md`; insert or explain every experiment-generated figure/table and verify that every subsection under `4 Experiments and Results` has at least one relevant visual artifact.
+4. Check `experiment-traceability.md`; verify all scientifically material evidence is represented in the paper or an available supplement; full failed-run/debugging records remain external.
+5. Check `figure-table-insertion-audit.md`; verify that each included figure/table has evidence, a clear purpose, an accurate caption, and nearby discussion. No artifact is required for every subsection.
 6. Check `reference-dedup-audit.md`; fix duplicate-paper entries before final polish.
 7. Recompile TeX to PDF after fixes.
 
@@ -260,7 +235,7 @@ Before `humanizer`, scan the manuscript for concrete professionalism defects:
 - repeated negative disclaimers that restate the same limitation rather than defining the measured scope once;
 - unsupported trust, reproducibility, superiority, novelty, or deployment language.
 
-Run `humanizer` only on passages with identified defects. Do not blanket-paraphrase the full draft. Preserve already-natural academic text, technical terms, equations, numerical values, citations, figure/table references, and the intended strength of supported claims. Humanization must retain a formal journal register; it is not permission to make the prose casual.
+Use the actual input builder and academic profile in `writing-adapter.md` for every humanizer or final-polish call. Run `humanizer` only on passages with identified defects. Do not blanket-paraphrase the full draft. Preserve already-natural academic text, technical terms, equations, numerical values, citations, figure/table references, and the intended strength of supported claims. Humanization must retain a formal journal register; it is not permission to make the prose casual.
 
 Keep process material in external artifacts such as `experiment-traceability.md`, `reference-dedup-audit.md`, `figure-table-insertion-audit.md`, logs, manifests, and source archives. The manuscript should report reproducible scientific methods and evidence, not narrate the mechanics of producing the manuscript.
 
@@ -287,7 +262,7 @@ Deliver a concise audit note with:
 - figures/tables included;
 - guidance-file coverage status;
 - figure/table insertion audit status;
-- citation count, recency ratio, and duplicate-paper audit status;
+- citation coverage/relevance and duplicate-paper audit status;
 - TeX path, single final PDF path, template/style, and page count;
 - single-final-PDF page-policy status;
 - run-root path and artifact-containment status;

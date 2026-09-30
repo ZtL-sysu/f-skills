@@ -1,7 +1,7 @@
 interface:
   display_name: "F Submit V1"
   short_description: "SCI submission review, narrative closure, prose, and package QA"
-  default_prompt: "Use $f-submit-v1 to audit and revise this finished paper for scientific integrity, selling-point closure, selective humanization, declaration consistency, journal constraints, and a clean submission-ready package."
+  default_prompt: "Use $f-submit-v1 to audit and revise this finished paper for scientific integrity, a clear core claim with proportionate supporting findings, selective academic editing through the shared writing adapter, author-protected content and declarations, journal constraints, and a verified submission-ready package."
 
 policy:
   allow_implicit_invocation: true
