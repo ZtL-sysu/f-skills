@@ -12,8 +12,15 @@ Public collection of the currently installed `f-*` Codex skills plus the native 
 - `f-holdle`: execute and audit the HOLDLE v9-robust A-share research and consultation rules.
 - `f-holdle-v10`: execute the frozen HOLDLE v10 composite-champion configuration and rolling tests.
 - `spark-task-delegator`: delegate substantial independent work to native Luna with medium reasoning when beneficial; keep complex judgment and final synthesis in the primary agent.
+- [`research-github-sync`](skills/research-github-sync/SKILL.md): coordinate research agents through a shared GitHub protocol, standardized evidence checkpoints, incremental uploads, and executable handoffs.
 
 Each skill is stored under `skills/<skill-name>/` and retains its `SKILL.md`, scripts, references, assets, and UI metadata where present.
+
+### Shared research and handoffs
+
+Use `$research-github-sync` with a task and target repository. Agents read the repository protocol and previous handoffs, work in separate branches, and upload meaningful checkpoints while working. [The format specification](skills/research-github-sync/references/FORMAT.md) standardizes task ownership, handoffs, append-only failure logs, evidence manifests and metric CSV columns. Existing research files stay at their original paths. The included helper verifies artifact bytes; scientific acceptance and remote-push verification remain separate checks.
+
+Example instruction: `使用 $research-github-sync，仓库：https://github.com/ZtL-sysu/gnn2snn；任务：<具体任务>；先读协议和交接，按统一模板边干边上传，结束留下下一条可执行命令。`
 
 ## GPT-6 Astra workflow update — 2026-09-10
 
