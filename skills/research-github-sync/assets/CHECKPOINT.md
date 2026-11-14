@@ -4,6 +4,7 @@
 - Status: <in_progress | completed | blocked | failed>
 - Protocol: <path + version/hash>
 - Manifest: [manifest.json](manifest.json)
+- Auto-merge: <merged + default-branch commit | refused + reason | not attempted>
 
 ## Changes and actual commands
 

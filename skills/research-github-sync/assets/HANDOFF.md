@@ -6,6 +6,7 @@
 - Protocol: <relative path and SHA-256>
 - Latest checkpoint: <relative link>
 - Sync: <remote branch + verified commit, or local-only commit + reason>
+- Auto-merge: <merged + default-branch commit | refused + reason | not attempted>
 
 ## Established
 

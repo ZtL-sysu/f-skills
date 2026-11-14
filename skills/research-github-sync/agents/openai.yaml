@@ -1,4 +1,4 @@
 interface:
   display_name: "科研 GitHub 协作与续接"
-  short_description: "按统一模板持续同步关键研究产物、失败日志和交接状态，支持多 agent 协作续写"
-  default_prompt: "使用 $research-github-sync，先读取目标仓库的协作协议与交接记录，执行本次任务并持续上传标准化检查点。"
+  short_description: "只多不少就无脑自动合并：建分支、持续上传标准化检查点，纯增量判定通过后自动合入默认分支并 push"
+  default_prompt: "使用 $research-github-sync，先读取目标仓库的协作协议与交接记录，执行本次任务并持续上传标准化检查点；每次同步后运行纯增量自动合并判定，通过即自动合并并 push。"
