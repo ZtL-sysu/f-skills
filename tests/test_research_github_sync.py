@@ -38,6 +38,9 @@ def init_docs(project, agent_id="codex"):
     """Simulate 'first entry': copy only missing templates, never overwrite."""
     collab = project / "collaboration"
     (collab / "agents").mkdir(parents=True, exist_ok=True)
+    entry = project / "AGENTS.md"
+    if not entry.exists():
+        shutil.copy(ASSETS / "AGENTS.md", entry)
     for name in ("STATE.md", "TASKS.md"):
         dst = collab / name
         if not dst.exists():
@@ -69,17 +72,20 @@ class SkillContract(unittest.TestCase):
         files = sorted(str(p.relative_to(SKILL)) for p in SKILL.rglob("*") if p.is_file())
         self.assertEqual(files, [
             "SKILL.md", "agents/openai.yaml", "assets/AGENT.md",
-            "assets/STATE.md", "assets/TASKS.md",
+            "assets/AGENTS.md", "assets/STATE.md", "assets/TASKS.md",
         ])
         text = (SKILL / "SKILL.md").read_text(encoding="utf-8")
         lines = text.splitlines()
-        self.assertGreaterEqual(len(lines), 90)
+        self.assertGreaterEqual(len(lines), 100)
         self.assertLessEqual(len(lines), 160)
         for banned in ("auto_merge.py", "checkpoint_manifest.py", "FORMAT.md",
                        "无脑合并", "每 15", "manifest.json 生成", "METRICS.csv 的固定列"):
             self.assertNotIn(banned, text)
-        for required in ("STATE.md", "TASKS.md", "agents/", "先发现", "串行",
-                         "force push", "git add .", "已验证", "PROTOCOL.md"):
+        for required in ("STATE.md", "TASKS.md", "agents/", "AGENTS.md", "先发现", "串行",
+                         "force push", "git add .", "已验证", "PROTOCOL.md",
+                         "Overview", "Key Decisions", "Superseded", "Resume Entry",
+                         "阶段 A", "阶段 B", "独立复核", "安全检查",
+                         "必做", "自取"):
             self.assertIn(required, text)
         ui = (SKILL / "agents/openai.yaml").read_text(encoding="utf-8")
         for banned in ("只多不少", "自动合并", "检查点"):
@@ -93,9 +99,12 @@ class SkillContract(unittest.TestCase):
             collab = init_docs(root)
             made = sorted(p.name for p in collab.rglob("*") if p.is_file())
             self.assertEqual(len(made), 3, made)
+            self.assertTrue((root / "AGENTS.md").is_file())
             self.assertEqual((root / "src" / "main.py").read_text(), "print(1)\n")
             (collab / "STATE.md").write_text("custom state\n", encoding="utf-8")
+            (root / "AGENTS.md").write_text("custom entry\n", encoding="utf-8")
             init_docs(root)
+            self.assertEqual((root / "AGENTS.md").read_text(), "custom entry\n")
             self.assertEqual((collab / "STATE.md").read_text(), "custom state\n")
             self.assertEqual(len([p for p in collab.glob("STATE*")]), 1)
             self.assertEqual(len([p for p in collab.rglob("*") if p.is_file()]), 3)
@@ -112,6 +121,8 @@ class SkillContract(unittest.TestCase):
             (root / "AGENTS.md").write_text("Agent conventions\n")
             (root / "experiments" / "results.json").write_text('{"acc":0.9}\n')
             collab = init_docs(root)
+            self.assertEqual((root / "AGENTS.md").read_text(), "Agent conventions\n")
+            self.assertEqual(len(list(root.glob("AGENTS*"))), 1)
             (collab / "STATE.md").write_text(
                 "# State\n\n## Goal\nSee [README](../README.md) and [AGENTS.md](../AGENTS.md).\n\n"
                 "## Verified\n- accuracy in [results.json](../experiments/results.json)\n",
@@ -293,7 +304,7 @@ class SkillContract(unittest.TestCase):
             base = Path(tmp)
             repo = init_repo(base / "repo")
             (repo / "src").mkdir()
-            for name, content in {"src/main.py": "print(1)\n", ".env": "SECRET=1\n",
+            for name, content in {"src/main.py": "print(1)\n", ".env": "FAKE_SECRET_FOR_TEST=1\n",
                                   "id_rsa": "PRIVATE KEY\n", "token.txt": "fake-token-for-test\n",
                                   "weights.bin": "W" * 2048}.items():
                 (repo / name).write_text(content)
@@ -321,6 +332,105 @@ class SkillContract(unittest.TestCase):
             text = (SKILL / "SKILL.md").read_text(encoding="utf-8")
             for rule in ("不用 `git add .`", "reset --hard", "git clean", "串行", "未同步"):
                 self.assertIn(rule, text)
+
+
+    def test_09_zero_context_handoff_path(self):
+        """Integration check: the four entry files carry enough to resume without a repo-wide scan."""
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "project"
+            (root / "src").mkdir(parents=True)
+            (root / "experiments" / "configs").mkdir(parents=True)
+            (root / "experiments" / "results").mkdir(parents=True)
+            (root / "src" / "evaluate.py").write_text("print('fixture')\n")
+            (root / "experiments" / "configs" / "main.yaml").write_text("T: 4\n")
+            (root / "experiments" / "results" / "main.json").write_text('{"acc":0.87,"synthetic":true}\n')
+            collab = init_docs(root)
+            (collab / "STATE.md").write_text(
+                "# Project State\n\n## Overview\n"
+                "- 项目目标：验证稀疏路由省显存\n- 当前阶段：主实验完成，补泛化证据\n"
+                "- 当前路线：T=4 稀疏路由\n- 下一步重点：dataset_b 实验\n\n"
+                "## Key Decisions\n### 2026-11-10：改用稀疏路由\n"
+                "- 决定：稀疏路由\n- 原因：显存预算 4GB\n- 放弃方案：全量邻接\n"
+                "- 依据：experiments/results/main.json\n\n"
+                "## Verified（已验证，有证据）\n- acc 0.87，证据：experiments/results/main.json\n\n"
+                "## Hypothesis（当前假设）\n- dataset_b 上不掉点\n\n"
+                "## Pending（待验证）\n- 更长 T 收益\n\n"
+                "## Superseded（已推翻／已替代，勿引用）\n- 旧结论 91.2% → 作废原因：划分未对齐\n\n"
+                "## Next\n1. 运行 evaluate.py\n", encoding="utf-8")
+            (collab / "TASKS.md").write_text(
+                "| Task | Status | Owner | Scope |\n|---|---|---|---|\n"
+                "| 主实验 | done | codex | experiments/results/main.json |\n"
+                "| 泛化实验 | todo | — | src/evaluate.py |\n"
+                "| 论文 | doing | workbuddy | paper/draft.md |\n")
+            (collab / "agents" / "codex.md").write_text(
+                "# Agent: codex\n\n## 下一步（Resume Entry）\n"
+                "- 目标：dataset_b 泛化\n- 入口：experiments/configs/main.yaml\n"
+                "- 已有结果：experiments/results/main.json\n"
+                "- 建议动作：1. 核对配置 2. 运行 src/evaluate.py\n"
+                "- 注意：不要重跑主实验；论文由 workbuddy 负责\n", encoding="utf-8")
+            entry_files = [root / "AGENTS.md", collab / "STATE.md",
+                           collab / "TASKS.md", collab / "agents" / "codex.md"]
+            bundle = "\n".join(p.read_text(encoding="utf-8") for p in entry_files)
+            for key in ("项目目标", "当前阶段", "当前路线", "下一步重点", "Key Decisions",
+                        "原因", "放弃方案", "依据", "Verified", "Hypothesis", "Pending",
+                        "Superseded", "已推翻", "Resume Entry", "入口", "已有结果",
+                        "不要重跑主实验", "doing", "进程锁", "全盘扫描"):
+                self.assertIn(key, bundle)
+            for rel in ("experiments/configs/main.yaml", "experiments/results/main.json",
+                        "src/evaluate.py"):
+                self.assertIn(rel, bundle)
+                self.assertTrue((root / rel).is_file(), rel)
+            entry = (root / "AGENTS.md").read_text(encoding="utf-8")
+            for pointer in ("STATE.md", "TASKS.md", "agents/", "结束"):
+                self.assertIn(pointer, entry)
+
+    def test_10_mature_project_and_parallel_handoff(self):
+        """Control A: mature project reuse. Control B: agent C resumes a todo task."""
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "mature"
+            (root / "docs").mkdir(parents=True)
+            (root / "src").mkdir(parents=True)
+            (root / "experiments" / "results").mkdir(parents=True)
+            init_repo(root)
+            (root / "README.md").write_text("# Mature\n" + "detail " * 50)
+            (root / "AGENTS.md").write_text("custom project entry\n")
+            (root / "docs" / "old_report.md").write_text("old research plan\n")
+            (root / "experiments" / "results" / "latest.json").write_text('{"synthetic": true}\n')
+            (root / "src" / "exp.py").write_text("A result\n")
+            git(root, "add", "-A")
+            git(root, "commit", "-qm", "mature history")
+            before = {rel: (root / rel).read_bytes() for rel in
+                      ("README.md", "AGENTS.md", "docs/old_report.md",
+                       "experiments/results/latest.json", "src/exp.py")}
+            collab = init_docs(root)
+            (collab / "STATE.md").write_text(
+                "# Project State\n\n## Overview\n"
+                "- 项目目标：见 [README.md](../README.md)\n"
+                "- 当前阶段：见 [latest.json](../experiments/results/latest.json)\n"
+                "- 当前路线：轻量模型\n\n"
+                "## Superseded（已推翻／已替代，勿引用）\n"
+                "- 旧路线见 [old_report.md](../docs/old_report.md)，已被轻量模型替代\n",
+                encoding="utf-8")
+            state = (collab / "STATE.md").read_text(encoding="utf-8")
+            for rel, data in before.items():
+                self.assertEqual((root / rel).read_bytes(), data, rel)
+            self.assertNotIn("detail detail", state)
+            self.assertIn("../README.md", state)
+            self.assertIn("../docs/old_report.md", state)
+            self.assertIn("Superseded", state)
+            (collab / "TASKS.md").write_text(
+                "| Task | Status | Owner | Scope |\n|---|---|---|---|\n"
+                "| 实验 | doing | codex | src/ |\n"
+                "| 论文 | todo | claude | paper/ |\n")
+            tasks = (collab / "TASKS.md").read_text()
+            doing_owners = [line.split("|")[3].strip() for line in tasks.splitlines()
+                            if "| doing |" in line]
+            self.assertEqual(doing_owners, ["codex"])
+            self.assertIn("| 论文 | todo | claude | paper/ |", tasks)
+            (root / "paper").mkdir()
+            (root / "paper" / "notes.md").write_text("C handoff\n")
+            self.assertEqual((root / "src" / "exp.py").read_text(), "A result\n")
+            self.assertEqual((root / "AGENTS.md").read_text(), "custom project entry\n")
 
 
 if __name__ == "__main__":

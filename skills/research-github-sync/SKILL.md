@@ -1,6 +1,6 @@
 ---
 name: research-github-sync
-description: Lightweight multi-agent project collaboration and research memory. Use when agents need to share project state, hand off work across sessions or tools, or sync progress and key findings through Git/GitHub.
+description: Lightweight multi-agent project collaboration and research memory. Use when a new agent with no prior context must understand a project and continue work, when agents share state across sessions or tools, or when progress and key findings must be synced through Git/GitHub.
 ---
 
 # Research GitHub Sync
@@ -11,67 +11,84 @@ description: Lightweight multi-agent project collaboration and research memory. 
 
 ## 何时使用
 
+- 一个**没有历史对话上下文**的新 agent 需要读懂项目并接着干活。
 - 多个 agent 在同一项目轮流或并行工作，需要知道目标、进展与分工。
-- 跨会话、跨工具接续任务，需要从前任记录恢复上下文。
-- 需要通过 GitHub 同步进度，并保留重要结果、决策、失败经验与未完成事项。
+- 需要通过 GitHub 同步进度，并保留重要结果、决策依据、失败经验与未完成事项。
 - 不适合：一次性的普通 Git 操作、单人一次完成的任务、把本 skill 当通用 Git 工具。
+
+## 统一入口：AGENTS.md
+
+项目根目录的 `AGENTS.md` 是**所有 AI 工具共用的入口**，写相对稳定的信息：项目是什么、技术栈与环境、主要目录职责、运行/测试命令、协作文档位置、操作限制。用 `assets/AGENTS.md` 的小模板初始化；项目已有 AGENTS.md / README / 研究计划时优先复用并只补缺口，不复制全文、不覆盖用户改过的内容。不为不同工具分别复制完整规范；工具若有自己的规则文件，放一句「先读根目录 AGENTS.md」的指针即可。
+
+| 文件 | 职责（不互相重复） |
+|---|---|
+| `AGENTS.md` | 项目是什么、如何运行、去哪里找信息 |
+| `collaboration/STATE.md` | 目前研究/开发到哪一步、当前共识与关键决策 |
+| `collaboration/TASKS.md` | 正在做什么、谁负责、还有哪些任务 |
+| `collaboration/agents/<id>.md` | 具体 Agent 完成了什么、下一步如何接续 |
 
 ## 首次进入项目：先发现，再复用
 
-1. **只读最小集合**：项目入口（README.md / AGENTS.md / research_plan.md / docs/ 中实际存在的）、`collaboration/`（若有）、任务清单与最新 agent 记录。不要扫描全仓库历史日志。
-2. **识别已有文档**：
-   - 新版：`collaboration/STATE.md`、`collaboration/TASKS.md`、`collaboration/agents/<id>.md`。
-   - 旧版：`collaboration/PROJECT.md`、`PROTOCOL.md`、`tasks/<task>/TASK.md`、`HANDOFF.md`、`CHECKPOINT.md`、`manifest.json`、`METRICS.csv`。
-   旧文件一律**保留原路径**，读取信息后用相对链接引用；不重命名、不搬迁、不删除、不覆盖用户改过的文档，不删除旧实验记录。
-3. **复用优先**：已有项目目标文档，STATE 只概括 + 链接，不复制全文；已有任务文件继续用，不强制迁移到 TASKS；已有研究记录不另建指标表。现有文档已足够协作时，可以不创建任何新文件。
-4. **只补缺失**：需要时把 `assets/STATE.md`、`assets/TASKS.md` 复制到 `collaboration/`，把 `assets/AGENT.md` 复制为 `collaboration/agents/<agent_id>.md`。已存在的协作文件不覆盖，重复进入不重复生成。
-5. 不改动 `src/`、`experiments/`、`paper/` 等原有目录，不为统一格式修改已有科研证据。
+**阶段 A：快速建立全局认知（默认只读这 4 处）**
 
-## 三种协作文档
+1. `AGENTS.md`（或已有的项目入口：README.md / research_plan.md / docs/ 中实际存在的）。
+2. `collaboration/STATE.md` → `collaboration/TASKS.md` → 与当前任务相关的最新 `agents/<id>.md`。
+3. 读完后先形成一份简短的内部认知摘要：项目目标、当前阶段与路线、已验证结论、未完成任务、下一步。不要一进项目就全盘扫描 Git 历史或所有源码。
 
-| 文件 | 回答什么 | 谁写 | 何时写 |
-|---|---|---|---|
-| `collaboration/STATE.md` | 项目目标、整体进展、已验证结果、当前假设、已推翻结论、最大阻塞、下一步方向 | 任何 agent，项目级共识 | 项目级结论或方向变化时 |
-| `collaboration/TASKS.md` | 有哪些任务、状态、负责人、范围、涉及文件/资源、依赖 | 认领任务的 agent | 认领、完成、阻塞时 |
-| `collaboration/agents/<agent_id>.md` | 当前任务、已完成与证据、关键发现、未完成与阻塞、下一步、相关位置 | 仅该 agent | 交接前、有重要发现时 |
+**阶段 B：按需验证与深入**
 
-- STATE 保持简洁，只留对未来工作仍有意义的信息；重要结果指向真实文件、实验记录或提交；不重复保存完整实验数据；可以正常修改、更新和精简旧内容（历史靠 Git 追溯）；不必每次 commit 更新。科研项目明确区分**已验证事实 / 当前假设 / 未验证结论 / 已推翻或替代的结论**。
-- TASKS 用简单表格或短条目，状态只用 `todo / doing / blocked / done`。单 agent 接续不必填资源分配表；多 agent 并行要能识别明显冲突（负责人、范围、主要文件、依赖）。任务状态是记录，**不是进程锁**。
-- Agent 记录按 `assets/AGENT.md` 的六个小节写；长期使用时把旧任务压成摘要，重要结果靠原始文件和 Git 追溯，不保留流水账。同一 agent 的不同会话可继续维护自己的文件；不同运行实例可能同时工作时，用可区分实例 ID 的文件，避免互相覆盖。
+根据任务再读相关源码、实验配置、实际结果文件、论文、历史决策或提交。**不能仅凭交接文档断言记录都真实**：重要结果核对证据文件，作业状态核对进程/产物，旧计划、旧 README、旧日志只作背景，当前状态以 STATE.md 为准。
 
-**不记录**：每次工具调用、每条终端命令、中间思考、每次文件编辑、重复实验输出、模板化风险声明。重要失败只记原因、证据位置、是否值得重试。
+**已有文档优先**：已存在的项目目标文档只概括 + 相对链接引用；已有任务文件继续用，不强制迁移；已有研究记录不另建指标表；现有文档足够协作时可不创建新文件。只补缺失的模板，已存在的协作文件不覆盖，重复进入不重复生成。
+
+**旧版兼容**：`collaboration/PROJECT.md`、`PROTOCOL.md`、`tasks/<task>/TASK.md`、`HANDOFF.md`、`CHECKPOINT.md`、`manifest.json`、`METRICS.csv` 一律保留原路径，读取信息后用相对链接引用；不重命名、不搬迁、不删除、不覆盖用户改过的文档，不删除旧实验记录。
+
+不改动 `src/`、`experiments/`、`paper/` 等原有目录，不为统一格式修改已有科研证据。
+
+## 协作文档怎么写
+
+- **STATE.md** 开头用 `Overview` 一眼回答「在做什么 / 当前阶段 / 当前路线 / 下一步重点 / 最后更新」（最后更新只代表文档时间）。结论按 **Verified（已验证）/ Hypothesis（假设）/ Pending（待验证）/ Superseded（已推翻，勿引用）** 分开写，重要结果附证据位置。用 `Key Decisions` 记录影响未来方向的决策：决定、原因、放弃方案、依据，防止新 Agent 重复已失败的探索；琐碎实现决定不记，决策过多时归档历史、留摘要与链接。只留对未来有意义的信息，可正常修改精简，历史靠 Git 追溯，不必每次 commit 更新。
+- **TASKS.md** 用简单表格或短条目，状态只用 `todo / doing / blocked / done`。多 agent 并行写清负责人、范围、主要文件、依赖以识别明显冲突；单 agent 接续可只留任务与状态。状态是记录、**不是进程锁**，`doing` 不代表进程还在运行。
+- **agents/<id>.md** 按 `assets/AGENT.md` 六小节写。下一步用轻量 `Resume Entry`：目标、入口文件/命令、可复用结果、建议动作、注意事项（不要重复已核实的工作、哪些结果尚未验证、继续前需核实的条件）。简单任务两三句话即可，复杂科研任务才展开。同一 agent 的不同会话可继续维护自己的文件；不同实例同时工作要用可区分的 ID，避免互相覆盖。旧任务压成摘要，重要结果靠原始文件与 Git 追溯，清理摘要不删关键证据。
+
+**不记录**：每次工具调用、每条命令、中间思考、每次编辑、重复实验输出、模板化风险声明。重要失败只记原因、证据位置、是否值得重试。
 
 ## 认领与执行
 
-1. 依次读 STATE → TASKS → 自己的 `agents/<id>.md`（接续时加读前任记录）→ 核对实际代码与结果文件。信息够就不继续展开。
-2. 在 TASKS 标 `doing`，写负责人与范围。发现别人的 `doing` 与自己重叠，先按文件/资源协调；无法确认就暂停重叠部分，做能独立完成的部分。不得编造“已协商”，不得根据旧日志断言远程作业仍在运行。
-3. 正常执行：**允许修改代码、改写论文、删除错误内容、更正结论、更新状态**。Git 历史提供追溯，不要求“只增不减”。
-4. 事件驱动更新记录，不按固定间隔：完成有意义阶段、得到重要结果、重大失败或阻塞、重要决策、交接前、用户要求同步时。一次只更新必要文件：项目级结论进 STATE，任务状态进 TASKS，执行与交接进自己的 agent 记录；同一结果不重复写三份，靠相对链接关联。
-5. 不根据文件存在断言实验成功；重要当前状态必要时核实实际文件、进程或证据。
+1. 按阶段 A 读完后复述一句自己理解的任务与范围；在 TASKS 标 `doing`，写负责人与范围（**没有分配 agent 身份时自己取一个可区分的 ID，如工具名+日期**）。发现别人的 `doing` 与自己重叠，先按文件/资源协调；无法确认就暂停重叠部分，做能独立完成的部分。不得编造“已协商”，不得根据旧日志断言远程作业仍在运行。
+2. 正常执行：**允许修改代码、改写论文、删除错误内容、更正结论、更新状态**。Git 历史提供追溯，不要求“只增不减”。
+3. 事件驱动更新记录，不按固定间隔：完成有意义阶段、得到重要结果、重大失败或阻塞、重要决策、交接前、用户要求同步时。一次只更新必要文件：项目级结论进 STATE，任务状态进 TASKS，执行与交接进自己的 agent 记录；同一结果不重复写三份，靠相对链接关联。
+4. 不根据文件存在断言实验成功；不把未确认结果写成已验证结论；重要当前状态必要时核实实际文件、进程或证据。
+
+## 交接（每次收尾必做）
+
+1. **写或更新自己的 `agents/<id>.md`**（零上下文接手也要新建，自取 ID），`Resume Entry` 要具体到「先打开哪个文件、运行哪条命令、结果写到哪里」。不要因为「没人分配身份」「只是小任务」而跳过。
+2. 把 TASKS 里自己的任务标 `done` / `blocked`；这一步不改变项目级共识，不需要等用户确认。对项目级结论有疑问就记在自己的记录里，别改写 STATE；只有共识真的变了才更新 STATE。
+3. 同步后在回复里给出：入口链接、完成与未完成事项、下个 agent 的第一步、哪些结论尚未验证。
+4. 同一结果只在一处写全，其余用相对链接；重要科研结果的可复现材料（代码、配置、数据与划分、随机种子、指标、原始结果或证据位置、复现说明）留在项目原有实验目录或记录系统，交接文档只需能定位它们。放不进 GitHub 的大文件记录位置、获取方法与必要校验信息，不强制生成哈希清单。
 
 ## 两种协作模式
 
 按**是否同时运行 / 是否共享物理工作目录 / 是否有重叠写入 / 是否需要独立分支**选择，不按 agent 名称硬编码。
 
-**模式 A：同目录接力（默认）**。多个 agent 先后操作同一项目目录，不要求各自建分支或 worktree，不要求固定间隔同步。唯一硬前提：**同一物理 Git 工作目录中的 Git 写操作（checkout / add / commit / pull / rebase）必须串行**；不要为了方便同步清理别人的未提交修改。无法保证串行时，改用独立工作区。
+**模式 A：同目录接力（默认）**。多个 agent 先后操作同一项目目录，不要求各自建分支或 worktree。唯一硬前提：**同一物理 Git 工作目录中的 Git 写操作（checkout / add / commit / pull / rebase）必须串行**；不要为了方便同步清理别人的未提交修改。无法保证串行时，改用独立工作区。
 
 **模式 B：并行**。真正同时做独立任务时，用同一 GitHub 仓库 + 不同任务分支 + 独立 worktree/clone + 明确的文件与资源分工。Git 正常合并；出现冲突时检查冲突的实际内容，不得简单采用某一方版本覆盖别人的工作；无法安全处理就停下并记录。
 
-## GitHub 同步
+## 可选独立复核
+
+高影响成果（投稿前的核心结论、大规模重构、研究路线调整、多个 agent 合并相互依赖的工作）鼓励请一个**独立 Agent** 复核：改动是否符合任务、测试是否通过、结果是否有证据、结论是否夸大、重要决策与交接是否记录。日常提交不必走这一步；不绑定具体模型，不强制 PR 或分支；复核者不得把未验证推测写成事实。
+
+## GitHub 同步与首次安全检查
 
 默认就是**正常 commit、push；需要合并时用标准 Git 流程**。没有自动合并脚本，也没有“只增不减”判定。
 
+首次为一个要同步的项目启用时检查一次：是否为 Git 仓库、remote 是否指向预期仓库、有无用户未提交修改、`.gitignore` 是否合理、有无疑似敏感文件（`.env` / Token / 私钥）与明显不适合上传的大文件、有无重复的协作文档。检查要针对**实际准备上传的文件**，不能只看 `.gitignore`。成熟项目不必每次重复；不擅自创建公开仓库，仓库不明确就停下来问。
+
 1. 同步前看 `git status` 与 `git diff --cached --stat`；只显式 `git add -- <本次明确产物>`，**不用 `git add .` / `-A`**，不把未跟踪文件一股脑加入。
-2. 检查上传范围：凭证、Token、密钥、隐私数据不上传；大型数据、模型权重、缓存未经确认不上传（可记录存放位置与获取方式）。
-3. commit 后 push，用 `git ls-remote` 确认远端 SHA 与本地 HEAD 一致才算「已同步」；只有本地 commit 写「未同步」。
-4. push 被拒：保留本地提交，fetch 查清原因后正常合并或 rebase；网络失败最多一次即时重试，仍失败记录未同步 SHA 与恢复命令，交接时再试。
-5. 无冲突的正常变更按标准 Git 合并；冲突看实际内容再处理。不自动删除别人的分支，不重写远端历史。
-
-## 交接与可复现性
-
-交接：更新自己的 agent 记录（下一步要具体到可执行）→ TASKS 标 `done` / `blocked` → 项目级共识有变才更新 STATE → 同步 → 在回复里给出入口链接、完成/未完成事项、下个 agent 的第一步。
-
-重要科研结果仍要可复现：实验代码、关键配置、数据与划分、随机种子、指标、原始结果或证据位置、必要复现说明，保存在项目原有实验目录或记录系统里；交接文档只需能定位它们。放不进 GitHub 的大文件记录位置、获取方法与必要校验信息，不强制为所有文件生成哈希清单。
+2. commit 后 push，用 `git ls-remote` 确认远端 SHA 与本地 HEAD 一致才算「已同步」；只有本地 commit 写「未同步」。
+3. push 被拒：保留本地提交，fetch 查清原因后正常合并或 rebase；网络失败最多一次即时重试，仍失败记录未同步 SHA 与恢复命令，交接时再试。
+4. 无冲突的正常变更按标准 Git 合并；冲突看实际内容再处理。不自动删除别人的分支，不重写远端历史。
 
 ## 安全边界
 
@@ -85,15 +102,15 @@ description: Lightweight multi-agent project collaboration and research memory. 
 
 **同目录接力**
 
-1. Agent A 进入项目：读项目入口 → `collaboration/STATE.md` → `TASKS.md` → `agents/codex.md`。缺少协作文档时，按「先发现，再复用」只补必要模板。
-2. A 在 TASKS 标 `doing`、写范围，做实验，结果留在原有 `experiments/`；更新 STATE 的 Verified 与自己的 agent 记录（下一步写清可执行命令），正常显式 stage + commit + push，并确认远端。
-3. Agent B 进入：同样只读这三份文件加 A 的记录 → 核对 `experiments/` 中实际结果 → 从 A 的「下一步」继续，把任务标 `done` 或 `blocked`。
-4. B 不重建目录、不生成清单、不新建分支；只有状态或分工变化时才更新对应文档。
+1. Agent A 进入项目：读 `AGENTS.md` → `collaboration/STATE.md` → `TASKS.md` → `agents/codex.md`，形成认知摘要；缺协作文档时按「先发现，再复用」只补必要模板（含根目录 AGENTS.md）。
+2. A 在 TASKS 标 `doing`、写范围，做实验，结果留在原有 `experiments/`；更新 STATE 的 Verified 与 Key Decisions，写好自己的 `Resume Entry`，正常显式 stage + commit + push 并确认远端。
+3. Agent B（零上下文）进入：同样只读这 4 处 → 复述目标与下一步 → 按需核对 `experiments/` 实际结果 → 从 A 的 `Resume Entry` 继续，把任务标 `done`，写下自己的交接。
+4. B 不重建目录、不生成清单、不新建分支、不扫描全部历史；只有状态或分工变化时才更新对应文档。
 
-**并行**：A 与 B 在独立 worktree 同时工作时，各在 TASKS 写明 Scope（例如 `experiments/` 与 `paper/`），分别提交到自己的分支；合入前 fetch + 正常 merge，无冲突即合并，有冲突检查实际内容后再处理。
+**并行**：A 与 B 在独立 worktree 同时工作时，各在 TASKS 写明 Scope，分别提交到自己的分支；合入前 fetch + 正常 merge，无冲突即合并，有冲突检查实际内容后再处理。必要时请独立 Agent 复核。
 
-**不使用**：单人一次性改动、只需一次普通 commit、没有跨 agent 接续需求时，直接按正常流程做，不必启用本 skill。
+**不使用**：单人一次性改动、只需一次普通 commit、没有跨 agent 接续需求时，直接按正常流程做。
 
 ## 模板
 
-`assets/STATE.md`、`assets/TASKS.md`、`assets/AGENT.md` 只是起点，按项目需要删改，不强制填满所有小节。
+`assets/AGENTS.md`（项目根入口）、`assets/STATE.md`、`assets/TASKS.md`、`assets/AGENT.md` 只是起点，按项目需要删改，不强制填满所有小节。

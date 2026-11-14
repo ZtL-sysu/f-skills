@@ -12,17 +12,19 @@ Public collection of the currently installed `f-*` Codex skills plus the native 
 - `f-holdle`: execute and audit the HOLDLE v9-robust A-share research and consultation rules.
 - `f-holdle-v10`: execute the frozen HOLDLE v10 composite-champion configuration and rolling tests.
 - `spark-task-delegator`: delegate substantial independent work to native Luna with medium reasoning when beneficial; keep complex judgment and final synthesis in the primary agent.
-- [`research-github-sync`](skills/research-github-sync/SKILL.md): lightweight multi-agent collaboration and research memory — three Markdown files for project state, tasks and per-agent handoffs, with ordinary Git sync.
+- [`research-github-sync`](skills/research-github-sync/SKILL.md): lightweight multi-agent collaboration and research memory — one shared `AGENTS.md` entry plus three collaboration documents, with ordinary Git sync.
 
 Each skill is stored under `skills/<skill-name>/` and retains its `SKILL.md` and any scripts, references, assets, and UI metadata it needs.
 
 ### Shared research and handoffs
 
-Use `$research-github-sync` when several agents (Codex, WorkBuddy, others) work on the same project in sequence or in parallel. Start from existing project docs; add `collaboration/STATE.md`, `collaboration/TASKS.md` and `collaboration/agents/<agent_id>.md` only when information is missing. [Templates](skills/research-github-sync/assets/) are a starting point, not a required layout: existing README / AGENTS.md / experiment records are referenced, never moved or overwritten. Older `collaboration/PROJECT.md`, `PROTOCOL.md` and `tasks/` trees are read and left in place.
+Use `$research-github-sync` when a new agent with no prior conversation context must understand a project and continue work, or when several agents (Codex, WorkBuddy, others) work in sequence or in parallel. A root `AGENTS.md` is the common entry point: what the project is, how to run it, and where the collaboration docs live. New agents read `AGENTS.md` → `collaboration/STATE.md` → `TASKS.md` → relevant `agents/<id>.md` first, form a short project summary, then verify only the source, config and result files they actually need. STATE separates Verified / Hypothesis / Pending / Superseded conclusions and records Key Decisions with reasons and rejected alternatives; agent records end with an executable Resume Entry.
 
-Git uses ordinary commits and pushes. Shared working directories serialize Git writes; genuinely parallel work uses separate branches or worktrees with explicit file ownership. Sensitive files and large artifacts stay out of uploads; never force-push or overwrite another agent's work. The skill itself has no runtime scripts; `tests/test_research_github_sync.py` verifies the protocol and templates in temporary Git repos via `python -m unittest discover -s tests -v`.
+[Templates](skills/research-github-sync/assets/) are a starting point, not a required layout: existing README / AGENTS.md / experiment records are referenced, never moved or overwritten. Older `collaboration/PROJECT.md`, `PROTOCOL.md` and `tasks/` trees are read and left in place.
 
-Example instruction: `使用 $research-github-sync，仓库：https://github.com/ZtL-sysu/gnn2snn；任务：<具体任务>；先读现有项目说明与协作状态，认领任务，在有意义节点更新记录，结束时留下可执行的交接。`
+Git uses ordinary commits and pushes. Shared working directories serialize Git writes; genuinely parallel work uses separate branches or worktrees with explicit file ownership. Sensitive files and large artifacts stay out of uploads; never force-push or overwrite another agent's work. Optional independent review is encouraged for high-impact results, but PRs, branches and reviews are not mandatory. The skill itself has no runtime scripts; `tests/test_research_github_sync.py` verifies the protocol, templates and a zero-context handoff path in temporary Git repos via `python -m unittest discover -s tests -v`.
+
+Example instruction: `使用 $research-github-sync，进入这个项目，了解当前进展，并继续尚未完成的工作。`
 
 ## GPT-6 Astra workflow update — 2026-09-10
 
