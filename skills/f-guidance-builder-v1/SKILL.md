@@ -19,6 +19,8 @@ Use this skill before `f-research-v1`. Its job is to select or validate a publis
 
 This skill is evidence-first, not story-first. Before generating the final guidance file, it must research recent literature, identify strong current baselines, reason through the method's theoretical feasibility, and stress-test whether the resulting story is strong enough for the requested journal tier. Only after those checks pass may it write the guidance file.
 
+By default, load [references/top-venue-learning-mode.md](references/top-venue-learning-mode.md) and run its L1–L6 phases during initial research planning inside CCFA startup, without waiting for a separate user request. For an existing project revision, run them as a versioned-contract revision. Its outputs feed G0, G7, G8 and the final guidance; they never weaken a binding target. Respect an explicit user instruction to omit or limit this study. For theory-only work, apply the phases to proof strategies and theoretical evidence under the theory-only profile; do not introduce empirical experiment obligations.
+
 The `expected_strong` result required by `f-research-v1` remains binding. It is not a wish or a number selected for presentation value: it must be an evidence-grounded, pre-experiment target with a credible implementation path. This skill must reject attractive but mechanically unsupported stories before experiment execution begins.
 
 ## Inputs
@@ -31,11 +33,11 @@ Default to running experiments and paper-side work on the user's local machine i
 
 Unless the user explicitly gives another output root, save every generated project under the current workspace's `auto-paper/` directory.
 
-For each successful guidance build:
+For each guidance build:
 
 1. Create `auto-paper/` if it does not exist.
 2. Create a run folder named by local generation time, using `yyyyMMdd-HHmmss` such as `20260602-143012`. If the timestamp already exists, append `-01`, `-02`, etc.
-3. Inside the timestamp folder, create one folder named after the selected paper title. Sanitize only filesystem-illegal characters (`<>:"/\|?*`) and collapse repeated whitespace; keep the title human-readable.
+3. Inside the timestamp folder, create a separate run folder for each candidate named after its proposed paper title; distinguish duplicate titles with a suffix. Each candidate has its own state and evidence, and the selected candidate folder is the final deliverable. Sanitize only filesystem-illegal characters (`<>:"/\|?*`) and collapse repeated whitespace; keep the title human-readable.
 4. Save all generated files inside that paper-title folder:
    - `guidance.md`
    - `novelty-feasibility-report.md`
@@ -51,9 +53,9 @@ Do not scatter generated files directly under `auto-paper/` or the workspace roo
 
 ## Sequential Execution Integrity
 
-Create `guidance-pipeline-state.md` inside each selected paper-title folder before the CCFA startup deliberation. Its canonical order is `CCFA-startup -> G0 -> G1 -> G2 -> G3 -> G4 -> G5 -> G6 -> G7 -> G8 -> validation -> handoff`. Every stage must be recorded as `pending`, `running`, `passed`, `blocked`, or `superseded`; `skipped` is not a valid state.
+Create `guidance-pipeline-state.md` and initialize `pipeline-state.json` inside each candidate paper-title run folder before its CCFA startup deliberation. Each candidate has an independent ledger; retain rejected candidates and their failed-gate evidence and link them from the selected candidate’s scenario decision log. Its canonical order is `CCFA-startup -> G0 -> G1 -> G2 -> G3 -> G4 -> G5 -> G6 -> G7 -> G8 -> validation -> handoff`. Every stage must be recorded as `pending`, `running`, `passed`, `blocked`, or `superseded`; `skipped` is not a valid state.
 
-Do not begin a stage until its immediate predecessor is recorded `passed`. A failed scenario may move to another scenario, but the replacement must restart from `CCFA-startup` and run every gate in order. A repair may revisit an earlier gate, but it must never mark a later gate passed using stale evidence. The final handoff is invalid unless the state ledger proves that every required stage passed in canonical order.
+Do not begin a stage until its immediate predecessor is recorded `passed`. A failed scenario may move to another candidate in its own run folder and independent ledger, starting from `CCFA-startup` and running every gate in order. A repair may revisit an earlier gate, but it must never mark a later gate passed using stale evidence. The final handoff is invalid unless the state ledger proves that every required stage passed in canonical order.
 
 ## CCFA Startup Deliberation
 
@@ -64,6 +66,8 @@ Run this deliberation before G0. The user has authorized this integrated CCFA ha
 3. Use `ccf-literature-searcher` in standard mode to build a public-safe opportunity map: closest-work clusters, public datasets, current strong baselines, metrics, code/checkpoint availability, and differentiation routes. Its source-quality policy applies to the final packet.
 4. Use `ccf-idea-reviewer` in standard mode for an independent red-team review after the literature map exists. Preserve its separate readiness score, development potential, confidence, fatal risks, and score-change conditions; do not convert an unsearched novelty claim into a positive score.
 5. Use `ccf-experiment-designer` in `design` mode to build the claim-evidence matrix and the strong-result feasibility contract described below. It supplies placeholders and decision rules, never fabricated results.
+
+When the top-venue study is not explicitly omitted, its L6 contract delta is part of the startup deliberation: each new binding experiment row joins the claim-evidence matrix, and each new manuscript requirement joins the guidance story section. The study artifacts are archived per its artifact contract, referenced by the packet, and counted as gate evidence for G0/G7/G8.
 
 Store the resulting `ccfa-startup-packet/` inside the selected paper-title folder. It must contain:
 
@@ -97,7 +101,7 @@ Run these gates in order. If a hard-blocking gate fails, stop that scenario imme
 
 | Gate | Decision | Pass condition |
 |---|---|---|
-| G0 Recent literature and baseline map | Hard block | Web/literature search identifies the current strongest baselines, including recent authoritative papers from the last 3-5 years, their official code/checkpoint status when available, datasets, metrics, and whether they are direct experimental baselines or literature-only context. |
+| G0 Recent literature and baseline map | Hard block | Web/literature search identifies the current strongest baselines, including recent authoritative papers from the last 3-5 years, their official code/checkpoint status when available, datasets, metrics, and whether they are direct experimental baselines or literature-only context. Unless explicitly omitted or limited by the user, the top-venue study additionally requires the L1 paper cards and the L2/L3 family deconstructions, and the literature-baseline matrix must cite them. |
 | G1 Public dataset access | Hard block | At least one suitable dataset is directly public: downloadable by URL, official repository, Hugging Face, Kaggle, OpenML, UCI, Zenodo, Figshare, GitHub release, or similar. Exclude datasets requiring email approval, institutional approval, NDA, IRB, payment, manual review, or waiting for access. |
 | G2 Task and evaluation validity | Hard block | Dataset supports a clear input-output task, labels or measurable targets, reproducible splits or split strategy, primary metric, and evaluation protocol. |
 | G3 Theoretical fit and feasibility proof | Hard block | The technique has a concrete mechanism-level reason to help in this application, not just "apply method X to domain Y"; the guidance includes a short theory/algorithm feasibility audit explaining why the method is learnable, what assumptions it needs, and what would falsify the mechanism. |
@@ -105,7 +109,7 @@ Run these gates in order. If a hard-blocking gate fails, stop that scenario imme
 | G5 Hardware and runtime feasibility | Repairable block | The project can run on the user's local machine and Conda environment under its hardware/runtime budget, using MPS/CUDA when supported, or the plan can be credibly scaled down while preserving evidence strength. Any remote execution is an explicit opt-in exception. |
 | G6 Strong baseline and ablation feasibility | Repairable block | The plan includes simple baselines, matched internal baselines, strong recent domain baselines, and technique-family baselines. For Q1/top targets, at least one strong recent authoritative baseline must be planned as a direct rerun/adaptation attempt before method iteration; literature-only baselines are clearly separated and cannot carry the main comparison. |
 | G7 Effectiveness and strong-result plausibility | Repairable block | The CCFA strong-result feasibility contract shows a mechanism-supported, baseline-calibrated path to the binding `expected_strong` result, including a runnable prototype milestone, adequate compute/seed/search budget, falsifying ablations, and stop-and-return conditions. Theory, prior results, pilot evidence, or task structure must support the target; arbitrary desired gains do not pass. |
-| G8 Story strength for target tier | Final value gate | The result can support the requested journal tier with a skeptical-reviewer story: clear bottleneck, distinct mechanism, strong baselines, decisive ablations, honest risks, and a reason the contribution is more than an incremental benchmark table. |
+| G8 Story strength for target tier | Final value gate | The result can support the requested journal tier with a skeptical-reviewer story: clear bottleneck, distinct mechanism, strong baselines, decisive ablations, honest risks, and a reason the contribution is more than an incremental benchmark table. Unless explicitly omitted or limited by the user, the top-venue study also checks the story against the L2 narrative moves and the L5 fatal-gap list: every fatal gap must be either resolved in the contract or explicitly argued out of scope with evidence. |
 
 Read `references/fail-fast-gates.md` for detailed gate criteria.
 
@@ -198,9 +202,10 @@ Also output:
 - `theoretical-feasibility-audit.md` with mechanism-level reasoning and falsification tests.
 - `story-strength-audit.md` with skeptical-reviewer and target-tier checks.
 - `ccfa-startup-packet/` with the deliberation, red-team review, and strong-result feasibility contract.
+- Unless the user explicitly omits the study, the `top-venue-study/` artifact set per `references/top-venue-learning-mode.md`, linked from the guidance's external-audit references.
 - an appended entry in `auto-paper/generated-research-directions.md` recording the generated research direction.
 
-Run `scripts/validate_guidance.py <guidance.md> --strict --packet <ccfa-startup-packet-directory>` before handing off to `f-research-v1`. Fix missing sections before finalizing.
+Run `scripts/validate_guidance.py <guidance.md> --strict --packet <ccfa-startup-packet-directory> --top-venue-study <study-directory>` before handing off to `f-research-v1`. Omit the study option only when the user explicitly omits the study; use the theory-only validation profile and omit the empirical packet for theory-only work. This checks study file presence, not source truth or scientific quality; inspect those substantively at the gates. Fix missing sections before finalizing.
 
 ## Blocking Rules
 
@@ -218,6 +223,7 @@ Run `scripts/validate_guidance.py <guidance.md> --strict --packet <ccfa-startup-
 ## References
 
 - `references/fail-fast-gates.md`: detailed gate checks and scoring.
+- `references/top-venue-learning-mode.md`: the default L1–L6 top-venue learning process for initial planning and project revisions.
 - `references/f-research-guidance-file-spec.md`: bundled copy of the target guidance file contract.
 - `references/source-verification.md`: dataset, literature, and novelty source standards.
 - `references/q2-guidance-standard.md`: minimum quality bar for generated guidance files.

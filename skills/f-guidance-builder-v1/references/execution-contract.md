@@ -12,7 +12,7 @@ Initialize once, inside the run root:
 ```text
 conda run -n <environment> python <skill-dir>/scripts/pipeline_state.py <run-root>/pipeline-state.json --init
 ```
-Populate `contract` with immutable contract/input-manifest snapshots. Each file entry is `{"path":"relative/path","sha256":"64-character SHA-256"}`. All listed files must be nonempty, present under the run root, and hash-correct. Imported originals may be referenced externally in prose, but copy evidence snapshots into the run root for validation.
+Populate `contract` with immutable contract/input-manifest snapshots before the first `--before` check. For example, after creating `execution-contract-v1.md`, add its relative path and SHA-256 to the state’s `contract` array; add any input-manifest snapshots in the same form. An initialized empty array is intentionally not ready to validate. Use a separate run root and JSON ledger for each candidate scenario; preserve rejected candidates and their evidence. An existing-project revision stays under its original paper-title run root and uses its existing ledger and versioned contract. Each file entry is `{"path":"relative/path","sha256":"64-character SHA-256"}`. Obtain a digest portably inside the selected Conda environment with `python -c "import hashlib,sys; print(hashlib.sha256(open(sys.argv[1], 'rb').read()).hexdigest())" <file>`; use the resulting digest and run-root-relative path in the JSON array. All listed files must be nonempty, present under the run root, and hash-correct. Imported originals may be referenced externally in prose, but copy evidence snapshots into the run root for validation.
 
 ## Ordered progress and back-edges
 

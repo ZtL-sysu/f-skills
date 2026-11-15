@@ -200,12 +200,21 @@ def validate_packet(packet: Path) -> list[str]:
     return errors
 
 
+def validate_top_venue_study(study: Path) -> list[str]:
+    """Check artifact presence only; reviewers must assess content and sources."""
+    names = ("paper-cards.md", "narrative-moves.md", "experiment-matrix-template.md",
+             "execution-conventions.md", "gap-analysis.md", "contract-delta.md")
+    return [f"missing or empty top-venue artifact: {name}" for name in names
+            if not (study / name).is_file() or not (study / name).read_text(encoding="utf-8").strip()]
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("guidance", type=Path, help="Path to guidance Markdown")
     parser.add_argument("--strict", action="store_true", help="Flag thin sections and placeholders")
     parser.add_argument("--packet", type=Path, help="Validate CCFA artifacts and feasibility-contract.json")
     parser.add_argument("--study-mode", choices=["empirical", "theory-only"], default="empirical")
+    parser.add_argument("--top-venue-study", type=Path, help="Check six study artifacts exist and are nonempty")
     args = parser.parse_args()
 
     if not args.guidance.exists():
@@ -219,6 +228,8 @@ def main() -> int:
             errors.append("theory-only uses actual proof-plan evidence, not an empirical feasibility packet")
         else:
             errors.extend(validate_packet(args.packet))
+    if args.top_venue_study is not None:
+        errors.extend(validate_top_venue_study(args.top_venue_study))
     if errors:
         print("Guidance validation failed:")
         for error in errors:
