@@ -1,0 +1,6 @@
+interface:
+  display_name: "Scientific Paper Writing"
+  short_description: "Clear, evidence-led writing across research topics"
+  default_prompt: "Use $scientific-paper-writing to organize and revise this paper around its research question, contribution, and evidence, adapting the structure to its genre."
+policy:
+  allow_implicit_invocation: true

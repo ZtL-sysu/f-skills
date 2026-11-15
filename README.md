@@ -9,6 +9,7 @@ Public collection of the currently installed `f-*` Codex skills plus the native 
 - `f-submit-v1`: perform scientific, integrity, comparator, revision, and submission-package checks for a finished manuscript.
 - `f-teacher-guide`: create and audit step-by-step teaching guides and self-contained student experiment packages.
 - `f-teacher-pptx`: create and audit image-rich, classroom-readable multi-lesson teaching decks.
+- [scientific-paper-writing](skills/scientific-paper-writing/SKILL.md): portable, contribution-led scholarly writing and revision guidance with English and Chinese references.
 - `f-holdle`: execute and audit the HOLDLE v9-robust A-share research and consultation rules.
 - `f-holdle-v10`: execute the frozen HOLDLE v10 composite-champion configuration and rolling tests.
 - `spark-task-delegator`: delegate substantial independent work to native Luna with medium reasoning when beneficial; keep complex judgment and final synthesis in the primary agent.
